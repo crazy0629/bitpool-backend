@@ -3,27 +3,30 @@ import dotenv from "dotenv";
 dotenv.config();
 
 /**************************************  Server Consts variables  ***********************************/
-export const MONGO_URI = process.env.MONGO_URI as string;
-("mongodb+srv://kuzma:mr.doctor0104@cluster0.danmkpq.mongodb.net/bitsport?retryWrites=true&w=majority");
-export const SECRET_KEY =
-  (process.env.SECRET_KEY as string) || "bitsport-bitpool-node-project";
-export const SERVER_URI = "http://127.0.0.1";
+export const MONGO_URI =
+  (process.env.MONGO_URI as string)
+  "mongodb+srv://kuzma:mr.doctor0104@cluster0.danmkpq.mongodb.net/bitsport?retryWrites=true&w=majority";
+export const SECRET_KEY = (process.env.SECRET_KEY as string) || "bitsport-bitpool-node-project";
+export const SERVER_URI = 'http://127.0.0.1';
 export const SERVER_PORT = (process.env.SERVER_PORT as string) || 8000;
 
+
 // Email Verification
-export const USER_EMAIL = process.env.USER_EMAIL || "AKIAVODMUBIM2GSPWU7I";
-export const USER_PASSWORD =
-  process.env.USER_PASSWORD || "BLDR30JJ0GJ1dWtpamMFHPTxtMC2SQYufw6TwyzoFRGt";
+export const USER_EMAIL = process.env.USER_EMAIL || 'AKIAVODMUBIM2GSPWU7I';
+export const USER_PASSWORD = process.env.USER_PASSWORD || 'BLDR30JJ0GJ1dWtpamMFHPTxtMC2SQYufw6TwyzoFRGt';
+
+
+
 
 /***************************************   Wallet Consts variables  *********************************/
 
 // Network Names
-export const ETHEREUM: string = "ETHEREUM";
-export const SOLANA: string = "SOLANA";
-export const BITCOIN: string = "BITCOIN";
-export const RIPPLE: string = "RIPPLE";
-export const BNBCHAIN: string = "BNB CHAIN";
-export const TRON: string = "TRON";
+export const ETHEREUM: string = 'ETHEREUM';
+export const SOLANA: string = 'SOLANA';
+export const BITCOIN: string = 'BITCOIN';
+export const RIPPLE: string = 'RIPPLE';
+export const BNBCHAIN: string = 'BNB CHAIN';
+export const TRON: string = 'TRON';
 
 // Derived Path
 export const ETHEREUM_DEFAULT: string = "m/44'/60'/0'/0/";
@@ -34,83 +37,81 @@ export const TRON_DEFAULT: string = "m/44'/195'/0/0";
 export const LITECOIN_DEFAULT: string = "m/44'/2'/0'/0";
 
 // Ethereum Contract Data
-export const ERC721_INTERFACE_ID = "0x80ac58cd";
+export const ERC721_INTERFACE_ID = '0x80ac58cd';
 
 // Solana network cluster
-export const MAINNET_BETA: string = "mainnet-beta";
-export const TESTNET: string = "testnet";
-export const DEVNET: string = "devnet";
+export const MAINNET_BETA: string = 'mainnet-beta';
+export const TESTNET: string = 'testnet';
+export const DEVNET: string = 'devnet';
 // Bitcoin network
-export const BTC_MAINNET = "bitcoin";
-export const BTC_REGTEST = "regtest";
-export const BTC_TESTNET = "testnet";
+export const BTC_MAINNET = 'bitcoin';
+export const BTC_REGTEST = 'regtest';
+export const BTC_TESTNET = 'testnet';
 
 // Network Prototype
 export const LITECOIN_NETWORK_PROTOTYPE = {
-  messagePrefix: "\x19Litecoin Signed Message:\n",
-  bech32: "ltc",
-  bip32: {
-    public: 0x019da462,
-    private: 0x019d9cfe,
-  },
-  pubKeyHash: 0x30,
-  scriptHash: 0x32,
-  wif: 0xb0,
-};
+    messagePrefix: '\x19Litecoin Signed Message:\n',
+    bech32: 'ltc',
+    bip32: {
+        public: 0x019da462,
+        private: 0x019d9cfe,
+    },
+    pubKeyHash: 0x30,
+    scriptHash: 0x32,
+    wif: 0xb0,
+}
+
 
 // Ether Gasstation
-export const ETHER_GASSTATION_APIKEY =
-  "9218ce9ba793ff0339045d78a4161ad4b9c5d1ebad3158197514ac957d40";
-export const ETHER_GASSTATION_API: string = `https://ethgasstation.info/api/ethgasAPI.json?api-key=${ETHER_GASSTATION_APIKEY}`;
+export const ETHER_GASSTATION_APIKEY = '9218ce9ba793ff0339045d78a4161ad4b9c5d1ebad3158197514ac957d40'
+export const ETHER_GASSTATION_API: string = `https://ethgasstation.info/api/ethgasAPI.json?api-key=${ETHER_GASSTATION_APIKEY}`
 
 // Bitpay url
-export const BWS_INSTANCE_URL: string = "https://bws.bitpay.com/bws/api";
+export const BWS_INSTANCE_URL: string = 'https://bws.bitpay.com/bws/api'
 
 // Solana data API endpoint
-export const SOLANA_TOKENLIST_URI: string =
-  "https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json";
+export const SOLANA_TOKENLIST_URI: string = 'https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json';
 
 // hedera account id recover api endpoint
-export const GET_HEDERA_ACCOUNTID_ENDPOINT: string =
-  "https://mainnet-public.mirrornode.hedera.com/api/v1/accounts?accountpublickey=";
+export const GET_HEDERA_ACCOUNTID_ENDPOINT: string = 'https://mainnet-public.mirrornode.hedera.com/api/v1/accounts?accountpublickey=';
 
 // Actions
-export const CREATE_WALLET: string = "CREATE_WALLET";
-export const IMPORT_WALLET: string = "IMPORT_WALLET";
-export const CREATE_MASTERSEED: string = "CREATE_MASTERSEED";
-export const CREATE_ACCOUNT: string = "CREATE_ACCOUNT";
-export const IMPORT_ACCOUNT: string = "IMPORT_ACCOUNT";
-export const GET_BALANCE: string = "GET_BALANCE";
-export const GET_BALANCES: string = "GET_BALANCES";
-export const GET_TOKEN_BALANCE: string = "GET_TOKEN_BALANCE";
-export const GET_TOKEN: string = "GET_TOKEN";
-export const GET_TOKEN_LIST: string = "GET_TOKEN_LIST";
-export const SEND_COIN: string = "SEND_COIN";
-export const APPROVE_TOKEN: string = "APPROVE_TOKEN";
-export const TRANSFER_TOKEN: string = "TRANSFER_TOKEN";
-export const GET_TRANSACTION: string = "GET_TRANSACTION";
-export const GET_GAS: string = "GET_GAS";
+export const CREATE_WALLET: string = 'CREATE_WALLET';
+export const IMPORT_WALLET: string = 'IMPORT_WALLET';
+export const CREATE_MASTERSEED: string = 'CREATE_MASTERSEED';
+export const CREATE_ACCOUNT: string = 'CREATE_ACCOUNT';
+export const IMPORT_ACCOUNT: string = 'IMPORT_ACCOUNT';
+export const GET_BALANCE: string = 'GET_BALANCE';
+export const GET_BALANCES: string = 'GET_BALANCES';
+export const GET_TOKEN_BALANCE: string = 'GET_TOKEN_BALANCE';
+export const GET_TOKEN: string = 'GET_TOKEN';
+export const GET_TOKEN_LIST: string = 'GET_TOKEN_LIST';
+export const SEND_COIN: string = 'SEND_COIN';
+export const APPROVE_TOKEN: string = 'APPROVE_TOKEN';
+export const TRANSFER_TOKEN: string = 'TRANSFER_TOKEN';
+export const GET_TRANSACTION: string = 'GET_TRANSACTION';
+export const GET_GAS: string = 'GET_GAS';
 
 // Cardano Ada Handle
 export const ADA_HANDLE = {
-  mainnet: "f0ff48bbb7bbe9d59a40f1ce90e9e9d0ff5002ec48f232b49ca0fb9a",
-  testnet: "8d18d786e92776c824607fd8e193ec535c79dc61ea2405ddf3b09fe3",
+    mainnet: 'f0ff48bbb7bbe9d59a40f1ce90e9e9d0ff5002ec48f232b49ca0fb9a',
+    testnet: '8d18d786e92776c824607fd8e193ec535c79dc61ea2405ddf3b09fe3',
 };
-
+  
 // Blockfrost API project ID
 export const BLOCK_FROST = {
-  mainnet: "mainnetQf8DQD9zDkg91gBo2R8xmEG2IxCaS9fU",
-  testnet: "",
-  preprod: "",
-  preview: "previewcGGHuIlBcwBsYE7PzkEC26AMCb0LztD0",
-};
+    mainnet: 'mainnetQf8DQD9zDkg91gBo2R8xmEG2IxCaS9fU',
+    testnet: '',
+    preprod: '',
+    preview: 'previewcGGHuIlBcwBsYE7PzkEC26AMCb0LztD0'
+}
 
 // Tron API key
 export const TRONGRID_API_KEY = {
-  mainnet: "f0b1e38e-7bee-485e-9d3f-69410bf30681",
-  testnet: "6739be94-ee43-46af-9a62-690cf0947269",
-  dappchain: "a981e232-a995-4c81-9653-c85e4d05f599",
-};
+    mainnet: 'f0b1e38e-7bee-485e-9d3f-69410bf30681',
+    testnet: '6739be94-ee43-46af-9a62-690cf0947269',
+    dappchain: 'a981e232-a995-4c81-9653-c85e4d05f599'
+}
 
 // Coin Addresses
 export const BSC_MAINNET_WEB3PROVIDER = "https://bsc-dataseed1.binance.org";
@@ -118,14 +119,18 @@ export const ETH_MAINNET_WEB3PROVIDER =
   "https://mainnet.infura.io/v3/4b4f9d91a45846939231b666740bc499";
 export const TRON_MAINNET_WEB3PROVIDER = "https://api.trongrid.io";
 
-export const ADMIN_WALLET = "0x2fD47a99B3639c7e7730081DBCD2B969303261C8";
-export const ADMIN_PRIVATEKEY =
-  "c075ee4fd75d6a5108985e6d2a8ac48038fad9e3c590a42cdadf10ee1bfc32c4";
-export const TRON_ADMIN_WALLET = "";
-export const TRON_ADMIN_PRIVATEKEY = "";
+export const ADMIN_WALLET = "0x805E16E4921fef0574dc07b217FfE7Efa9C84636";
 
-export const COLD_ADMIN_WALLET = "0x87DE58C24e3E82545cd746969d5FADD2d6aA8276";
-export const TRON_COLD_ADMIN_WALLET = "";
+export const ADMIN_PRIVATEKEY =
+  "50c37e5a4e586a505ae9962189d952939661da7b43ad0fd10cd0b26d6df5230d";
+
+export const COLD_ADMIN_WALLET = "0x0d2B4b121A4d5C3B1398Aa1bd7e590B1A4765449";
+
+export const TRON_ADMIN_WALLET = "TTWJ3RjP3dZF76DgsX3J6jBDPwm89rkX7K";
+
+export const TRON_ADMIN_PRIVATEKEY = "a19b8a08d5ea20109ac8543d01212705d1f8051b702e401d7b8663fc65b44dcd";
+
+export const TRON_COLD_ADMIN_WALLET = "TRuiyvqaSzA7aMZkKcDh3uRdkwT8rJ8WZo";
 
 export const BUSD_TOKEN_ADDRESS_BNB: string =
   process.env.BUSD_TOKEN_ADDRESS_BNB ||
@@ -259,3 +264,6 @@ export const ERRORS = {
     description: "This address must be activated to use",
   },
 };
+/************************************************************     GAME    ****************************************/
+export const APP_SERVER_URI = 'https://app.bitsport.gg/api';
+export const WALLET_SERVER_URI = 'https://wallet.bitpool.gg/api';
