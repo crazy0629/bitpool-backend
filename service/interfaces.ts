@@ -61,6 +61,27 @@ export interface IPlayedChallenge extends Document {
     status: number;
 }
 
+
+export interface IPlayChallenge extends Document {
+    user_id: string;
+    challenge_id: string;
+    current_match: string;
+    win_match: string;
+    loss_match: string;
+    tot_match: string;
+    won_challenge: string;
+    status: string;
+}
+
+export interface IPlayedChallenge extends Document {
+    user_id: string;
+    challenge_id: string;
+    start_match: string;
+    end_match: string;
+    winorloss: string;
+    status: number;
+}
+
 export interface IHistory extends Document {
     user: string,
     coin: string,

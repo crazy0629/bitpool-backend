@@ -6,6 +6,7 @@ import AdminChallenge from '../models/Challenge';
 import PlayChallenge from '../models/PlayChallenges';
 import PlayedChallenges from '../models/PlayedChallenges';
 
+<<<<<<< HEAD
 export const start = async (req: Request, res: Response): Promise<Response> => {
     AdminChallenge.findById(req.body.cid).then(async (challenge_model: any) => {
         if(challenge_model.status === 2) {
@@ -38,6 +39,49 @@ export const start = async (req: Request, res: Response): Promise<Response> => {
         });
     })
     return res.json({ success: true });
+=======
+export const start = async (req: Request, res: Response) => {
+    if(req.body.uid) {
+        if(req.body.cid) {
+            AdminChallenge.findById(req.body.cid).then(async (challenge_model: any) => {
+                if(challenge_model.status === 2) {
+                    res.json({ success: false, message: 'Challenge closed.' });
+                }
+                if(challenge_model.coin_sku !== 1) {
+                    res.json({ success: false, message: 'Please select BITP challenges. This is in test.' });
+                    // const _res = axios.post(`${WALLET_SERVER_URI}/get-usdg`, { id: req.body.uid }, { headers: { debug: false, verify: false } });
+                    // const response = (await _res).data;
+                    // let qc = 0, usdg = 0;
+                    // if(response !== null) {
+                    //     qc = response.qc;
+                    // }
+                    // if(qc < challenge_model.qc) {
+                    //     res.json({ success: false, message: 'You have too low Quest Credit' });
+                    // }
+                    // else if(qc > 0) {
+                    //     await axios.post(`${WALLET_SERVER_URI}/credit-qc`, { id: req.body.uid, amount: challenge_model.qc }).then(res => {
+                    //         challenge_model.status = 2;
+                    //         challenge_model.save();
+                    //     });
+                    // }
+                }
+                PlayChallenge.findOne({ challenge: challenge_model._id, user: req.body.uid }).then((play_model: any) => {
+                    if(!play_model) {
+                        play_model = new PlayChallenge;
+                        play_model.user_id = req.body.uid;
+                        play_model.challenge_id = challenge_model._id;
+                        play_model.save();
+                        res.json({ success: true });
+                    }
+                });
+            })
+        } else {
+            res.json({ success: false, message: 'Please select correct challenge' });
+        }
+    } else {
+        res.json({ success: false, message: 'Please login!' });
+    }
+>>>>>>> 2244af5180e507855b9846536be982bbd8e34b99
 }
 
 export const get_challenge = (req: Request, res: Response) => {

@@ -26,12 +26,20 @@ router.post('/challenge/save', challenge.save);
 router.delete('/challenge/remove/:id', challenge.remove);
 
 // Wallet
+<<<<<<< HEAD
 router.post('/withdraw/index', wallet.withdraw_index);
 router.post('/deposit', wallet.deposit);
 router.post('/withdraw', wallet.withdraw);
 
 
 
+=======
+router.post("/deposit", wallet.deposit);
+router.post("/withdraw", wallet.withdraw);
+router.post("/getUserInfo", wallet.getUserInfo);
+router.post("/swap", wallet.swap);
+router.post("/withdrawHistory", wallet.withdrawHistory);
+>>>>>>> 2244af5180e507855b9846536be982bbd8e34b99
 
 // Game
 router.post('/game/start', game.start);

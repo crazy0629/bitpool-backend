@@ -118,6 +118,7 @@ export const BUSD_TOKEN_ADDRESS_BNB: string = process.env.BUSD_TOKEN_ADDRESS_BNB
 export const BUSD_TOKEN_ADDRESS_ETH: string = process.env.BUSD_TOKEN_ADDRESS_ETH || '0x4fabb145d64652a948d72533023f6e7a623c7c53'
 export const BUSD_TOKEN_ADDRESS_TRON: string = process.env.BUSD_TOKEN_ADDRESS_TRON || 'TMz2SWatiAtZVVcH2ebpsbVtYwUPT9EdjH '
 
+<<<<<<< HEAD
 export const USDT_TOKEN_ADDRESS_BNB: string = process.env.USDT_TOKEN_ADDRESS_BNB || '0x55d398326f99059ff775485246999027b3197955'
 export const USDT_TOKEN_ADDRESS_ETH: string = process.env.USDT_TOKEN_ADDRESS_ETH || '0xdac17f958d2ee523a2206206994597c13d831ec7'
 export const USDT_TOKEN_ADDRESS_TRON: string = process.env.USDT_TOKEN_ADDRESS_TRON || 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t'
@@ -125,6 +126,48 @@ export const USDT_TOKEN_ADDRESS_TRON: string = process.env.USDT_TOKEN_ADDRESS_TR
 export const CAKE_TOKEN_ADDRESS_BNB: string = process.env.CAKE_TOKEN_ADDRESS_BNB || '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82'
 export const CAKE_TOKEN_ADDRESS_ETH: string = process.env.CAKE_TOKEN_ADDRESS_ETH || '0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898'
 export const CAKE_TOKEN_ADDRESS_TRON: string = process.env.CAKE_TOKEN_ADDRESS_TRON || 'TPS2YfDckq9jwTw3kojvSpYXRgAiBKXiGm'
+=======
+export const ADMIN_WALLET = "0x805E16E4921fef0574dc07b217FfE7Efa9C84636";
+
+export const ADMIN_PRIVATEKEY =
+  "50c37e5a4e586a505ae9962189d952939661da7b43ad0fd10cd0b26d6df5230d";
+
+export const COLD_ADMIN_WALLET = "0x0d2B4b121A4d5C3B1398Aa1bd7e590B1A4765449";
+
+export const TRON_ADMIN_WALLET = "TTWJ3RjP3dZF76DgsX3J6jBDPwm89rkX7K";
+
+export const TRON_ADMIN_PRIVATEKEY = "a19b8a08d5ea20109ac8543d01212705d1f8051b702e401d7b8663fc65b44dcd";
+
+export const TRON_COLD_ADMIN_WALLET = "TRuiyvqaSzA7aMZkKcDh3uRdkwT8rJ8WZo";
+
+export const BUSD_TOKEN_ADDRESS_BNB: string =
+  process.env.BUSD_TOKEN_ADDRESS_BNB ||
+  "0xe9e7cea3dedca5984780bafc599bd69add087d56";
+
+export const BUSD_TOKEN_ADDRESS_ETH: string =
+  process.env.BUSD_TOKEN_ADDRESS_ETH ||
+  "0x4fabb145d64652a948d72533023f6e7a623c7c53";
+export const BUSD_TOKEN_ADDRESS_TRON: string =
+  process.env.BUSD_TOKEN_ADDRESS_TRON || "TMz2SWatiAtZVVcH2ebpsbVtYwUPT9EdjH ";
+
+export const USDT_TOKEN_ADDRESS_BNB: string =
+  process.env.USDT_TOKEN_ADDRESS_BNB ||
+  "0x55d398326f99059ff775485246999027b3197955";
+export const USDT_TOKEN_ADDRESS_ETH: string =
+  process.env.USDT_TOKEN_ADDRESS_ETH ||
+  "0xdac17f958d2ee523a2206206994597c13d831ec7";
+export const USDT_TOKEN_ADDRESS_TRON: string =
+  process.env.USDT_TOKEN_ADDRESS_TRON || "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
+
+export const CAKE_TOKEN_ADDRESS_BNB: string =
+  process.env.CAKE_TOKEN_ADDRESS_BNB ||
+  "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82";
+export const CAKE_TOKEN_ADDRESS_ETH: string =
+  process.env.CAKE_TOKEN_ADDRESS_ETH ||
+  "0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898";
+export const CAKE_TOKEN_ADDRESS_TRON: string =
+  process.env.CAKE_TOKEN_ADDRESS_TRON || "TPS2YfDckq9jwTw3kojvSpYXRgAiBKXiGm";
+>>>>>>> 2244af5180e507855b9846536be982bbd8e34b99
 
 // Network api
 export const ETHEREUM_TRANSACTION: string = process.env.ETHEREUM_TRANSACTION || 'https://api.etherscan.io/';
@@ -212,6 +255,7 @@ export const CARDANO_PREPROD_SERVER = 'https://cardano-preprod.blockfrost.io/api
 
 // Errors
 export const ERRORS = {
+<<<<<<< HEAD
     invalid_api_request: {
         message: 'INVALID_API_REQUEST',
         description: 'Invalid API request'
@@ -225,6 +269,17 @@ export const ERRORS = {
 
 
 
+=======
+  invalid_api_request: {
+    message: "INVALID_API_REQUEST",
+    description: "Invalid API request",
+  },
+  address_not_activated: {
+    message: "ADDRESS_NOT_ACTIVATED",
+    description: "This address must be activated to use",
+  },
+};
+>>>>>>> 2244af5180e507855b9846536be982bbd8e34b99
 /************************************************************     GAME    ****************************************/
 export const APP_SERVER_URI = 'https://app.bitsport.gg/api';
 export const WALLET_SERVER_URI = 'https://wallet.bitpool.gg/api';
