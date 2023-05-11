@@ -6,7 +6,7 @@ import { IPlayChallenge } from "../service/interfaces";
  */
 
 const PlayChallengeSchema = new Schema({
-    user_id: { type: String, required: true },
+    user_id: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
     challenge_id: { type: mongoose.Types.ObjectId, ref: 'Challenge', required: true },
     current_match: { type: Number, required: true, trim: true, default: 0 },
     win_match: { type: Number, required: true, trim: true, default: 0 },

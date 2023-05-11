@@ -1,10 +1,9 @@
-import axios from 'axios';
 import moment from 'moment';
 import { Request, Response } from 'express';
-import { WALLET_SERVER_URI } from '../config';
 import AdminChallenge from '../models/Challenge';
 import PlayChallenge from '../models/PlayChallenges';
 import PlayedChallenges from '../models/PlayedChallenges';
+import User from '../models/User';
 
 export const start = async (req: Request, res: Response) => {
     if(req.body.uid) {
@@ -14,22 +13,19 @@ export const start = async (req: Request, res: Response) => {
                     res.json({ success: false, message: 'Challenge closed.' });
                 }
                 if(challenge_model.coin_sku !== 1) {
-                    res.json({ success: false, message: 'Please select BITP challenges. This is in test.' });
-                    // const _res = axios.post(`${WALLET_SERVER_URI}/get-usdg`, { id: req.body.uid }, { headers: { debug: false, verify: false } });
-                    // const response = (await _res).data;
-                    // let qc = 0, usdg = 0;
-                    // if(response !== null) {
-                    //     qc = response.qc;
-                    // }
-                    // if(qc < challenge_model.qc) {
-                    //     res.json({ success: false, message: 'You have too low Quest Credit' });
-                    // }
-                    // else if(qc > 0) {
-                    //     await axios.post(`${WALLET_SERVER_URI}/credit-qc`, { id: req.body.uid, amount: challenge_model.qc }).then(res => {
-                    //         challenge_model.status = 2;
-                    //         challenge_model.save();
-                    //     });
-                    // }
+                    User.findById(req.body.uid).then((user: any) => {
+                        if(user.money.qc < challenge_model.qc) {
+                            res.json({ success: false, message: 'You have too low Quest Credit' });
+                        }
+                        else if(user.money.qc > 0) {
+                            user.money.qc -= challenge_model.qc;
+                            user.save().then((err: any) => {
+                                challenge_model.status = 2;
+                                challenge_model.save();
+                                res.json({ success: true });
+                            });
+                        }
+                    });
                 }
                 PlayChallenge.findOne({ challenge: challenge_model._id, user: req.body.uid }).then((play_model: any) => {
                     if(!play_model) {
@@ -51,18 +47,21 @@ export const start = async (req: Request, res: Response) => {
 
 export const get_challenge = (req: Request, res: Response) => {
     AdminChallenge.findOne({ status: 1 }).then((data: any) => {
+        console.log('get-challenge');
         res.json({ status: 1, data });
     })
 }
 
 export const get_challenge_by_id = (req: Request, res: Response) => {
     AdminChallenge.findById(req.body.challenge_id).then((data: any) => {
+        console.log('get-challenge-by-id', req.body.challenge_id);
         res.json({ status: 1, data });
     })
 }
 
 export const start_challenge = (req: Request, res: Response) => {
     AdminChallenge.findById(req.body.challenge_id).then((challenge_model: any) => {
+        console.log('start-challenge', req.body);
         if(challenge_model.status === 2) {
             res.json({ status: 0, message: 'Challenge is closed' });
         } else {
@@ -77,7 +76,9 @@ export const start_challenge = (req: Request, res: Response) => {
 }
 
 export const start_match = (req: Request, res: Response) => {
+    console.log('start-match', req.body);
     PlayChallenge.find({ challenge_id: req.body.match_id, user_id: req.body.user_id }).sort({ createdAt: -1 }).then((model: any) => {
+        console.log('start-match, playChallenge', model);
         PlayedChallenges.find({ user_id: model[0].user_id }).sort({ createdAt: -1 }).then((prev_match: any) => {
             if(prev_match.length > 0) {
                 prev_match[0].winorloss = 0;
@@ -92,6 +93,7 @@ export const start_match = (req: Request, res: Response) => {
             start.end_match = 'not set';
             start.winorloss = 'not set';
             start.save();
+            console.log('start-match, PlayedChallenge', start);
 
             res.json({ status: 1, message: "Match Started", data: start });
         })
@@ -104,6 +106,7 @@ export const submit_result = (req: Request, res: Response) => {
     // win = 1 | loss = 0
     const result = req.body.result;
     let iswonchallenge = false;
+    console.log('submit-result', req.body);
     PlayedChallenges.findById(challenge_id).then((played_model: any) => {
         const user_id = played_model.user_id;
 
@@ -141,7 +144,7 @@ export const submit_result = (req: Request, res: Response) => {
                 }
 
                 // if not win & not bitp set visible
-                if(result === 0 && main_challenge.coin_sku !== 'BITP') {
+                if(result === 0 && main_challenge.coin_sku !== 1) {
                     main_challenge.status = 1;
                     main_challenge.save();
                 }
@@ -163,10 +166,18 @@ export const submit_result = (req: Request, res: Response) => {
                 }
 
                 if(iswonchallenge) {
-                    axios.post(`${WALLET_SERVER_URI}/claim-reward`, { user_id: play_model.user_id, amount: main_challenge.amount, coin: main_challenge.coin_sku }, {
-                        headers: { verify: false, debug: false }
-                    })
+                    User.findById(play_model.user_id).then((user: any) => {
+                        if(main_challenge.coin_sku === 1)
+                            user.money.bitp = main_challenge.amount;
+                        else if(main_challenge.coin_sku === 2)
+                            user.money.busd = main_challenge.amount;
+                        else if(main_challenge.coin_sku === 3)
+                            user.money.usdt = main_challenge.amount;
+
+                        user.save();
+                    });
                 }
+                console.log('result', iswonchallenge);
 
                 res.json({ status: 1, iswon: iswonchallenge, message: 'Result submitted' });
             })

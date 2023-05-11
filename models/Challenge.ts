@@ -11,7 +11,7 @@ const ChallengeSchema = new Schema({
     difficalty: { type: Number, required: true },
     streak: { type: Number, required: true },
     amount: { type: String, required: true },
-    coin_sku: { type: Number, required: true },
+    coin_sku: { type: Number, required: true },                         // 1: bitp, 2: busd, 3: usdt
     loss_back: { type: String, required: true },
     qc: { type: String, required: true },
     status: { type: Number, required: true, default: 1 }
