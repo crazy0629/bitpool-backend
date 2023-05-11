@@ -1,0 +1,23 @@
+{
+  "symbol": "CAKEUSDT",
+  "priceChange": "-0.26900000",
+  "priceChangePercent": "-10.717",
+  "weightedAvgPrice": "2.36769315",
+  "prevClosePrice": "2.51000000",
+  "lastPrice": "2.24100000",
+  "lastQty": "18.92000000",
+  "bidPrice": "2.24000000",
+  "bidQty": "766.28000000",
+  "askPrice": "2.24100000",
+  "askQty": "669.24000000",
+  "openPrice": "2.51000000",
+  "highPrice": "2.52500000",
+  "lowPrice": "2.22800000",
+  "volume": "7224554.35000000",
+  "quoteVolume": "17105527.87795100",
+  "openTime": 1683298549331,
+  "closeTime": 1683384949331,
+  "firstId": 72225469,
+  "lastId": 72318174,
+  "count": 92706
+}
