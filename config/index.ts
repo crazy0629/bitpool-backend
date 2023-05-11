@@ -114,19 +114,11 @@ export const TRONGRID_API_KEY = {
 }
 
 // Coin Addresses
-export const BUSD_TOKEN_ADDRESS_BNB: string = process.env.BUSD_TOKEN_ADDRESS_BNB || '0xe9e7cea3dedca5984780bafc599bd69add087d56'
-export const BUSD_TOKEN_ADDRESS_ETH: string = process.env.BUSD_TOKEN_ADDRESS_ETH || '0x4fabb145d64652a948d72533023f6e7a623c7c53'
-export const BUSD_TOKEN_ADDRESS_TRON: string = process.env.BUSD_TOKEN_ADDRESS_TRON || 'TMz2SWatiAtZVVcH2ebpsbVtYwUPT9EdjH '
+export const BSC_MAINNET_WEB3PROVIDER = "https://bsc-dataseed1.binance.org";
+export const ETH_MAINNET_WEB3PROVIDER =
+  "https://mainnet.infura.io/v3/4b4f9d91a45846939231b666740bc499";
+export const TRON_MAINNET_WEB3PROVIDER = "https://api.trongrid.io";
 
-<<<<<<< HEAD
-export const USDT_TOKEN_ADDRESS_BNB: string = process.env.USDT_TOKEN_ADDRESS_BNB || '0x55d398326f99059ff775485246999027b3197955'
-export const USDT_TOKEN_ADDRESS_ETH: string = process.env.USDT_TOKEN_ADDRESS_ETH || '0xdac17f958d2ee523a2206206994597c13d831ec7'
-export const USDT_TOKEN_ADDRESS_TRON: string = process.env.USDT_TOKEN_ADDRESS_TRON || 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t'
-
-export const CAKE_TOKEN_ADDRESS_BNB: string = process.env.CAKE_TOKEN_ADDRESS_BNB || '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82'
-export const CAKE_TOKEN_ADDRESS_ETH: string = process.env.CAKE_TOKEN_ADDRESS_ETH || '0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898'
-export const CAKE_TOKEN_ADDRESS_TRON: string = process.env.CAKE_TOKEN_ADDRESS_TRON || 'TPS2YfDckq9jwTw3kojvSpYXRgAiBKXiGm'
-=======
 export const ADMIN_WALLET = "0x805E16E4921fef0574dc07b217FfE7Efa9C84636";
 
 export const ADMIN_PRIVATEKEY =
@@ -167,13 +159,17 @@ export const CAKE_TOKEN_ADDRESS_ETH: string =
   "0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898";
 export const CAKE_TOKEN_ADDRESS_TRON: string =
   process.env.CAKE_TOKEN_ADDRESS_TRON || "TPS2YfDckq9jwTw3kojvSpYXRgAiBKXiGm";
->>>>>>> 2244af5180e507855b9846536be982bbd8e34b99
 
 // Network api
-export const ETHEREUM_TRANSACTION: string = process.env.ETHEREUM_TRANSACTION || 'https://api.etherscan.io/';
-export const BNBCHAIN_TRANSACTION: string = process.env.BNBCHAIN_TRANSACTION || 'https://api.bscscan.com/';
-export const TRON_TRANSACTION: string = process.env.TRON_TRANSACTION || 'https://api.trongrid.io/';
-export const INFURA_URL: string = process.env.INFURA_URL || 'https://mainnet.infura.io/v3/4b4f9d91a45846939231b666740bc499';
+export const ETHEREUM_TRANSACTION: string =
+  process.env.ETHEREUM_TRANSACTION || "https://api.etherscan.io/";
+export const BNBCHAIN_TRANSACTION: string =
+  process.env.BNBCHAIN_TRANSACTION || "https://api.bscscan.com/";
+export const TRON_TRANSACTION: string =
+  process.env.TRON_TRANSACTION || "https://api.trongrid.io/";
+export const INFURA_URL: string =
+  process.env.INFURA_URL ||
+  "https://mainnet.infura.io/v3/4b4f9d91a45846939231b666740bc499";
 
 // RPC_ENDPOINTS
 
@@ -182,94 +178,83 @@ export const INFURA_URL: string = process.env.INFURA_URL || 'https://mainnet.inf
 /////////////////////////
 
 // Ethereum
-export const ETHERRUM_MAINNET_RPC_URL_1 = 'https://mainnet.infura.io/v3/';
-export const ETHEREUM_MAINNET_RPC_URL_2 = 'https://rpc.ankr.com/eth/';
+export const ETHERRUM_MAINNET_RPC_URL_1 = "https://mainnet.infura.io/v3/";
+export const ETHEREUM_MAINNET_RPC_URL_2 = "https://rpc.ankr.com/eth/";
 // Binance Smart Chain
-export const BINANCE_SMART_CHAIN_RPC_URL = 'https://bsc-dataseed2.binance.org';
+export const BINANCE_SMART_CHAIN_RPC_URL = "https://bsc-dataseed2.binance.org";
 // Polygon network
-export const POLYGON_MAINNET_RPC_URL = 'https://polygon-rpc.com';
+export const POLYGON_MAINNET_RPC_URL = "https://polygon-rpc.com";
 // Fantom network
-export const FANTOM_OPERA_MAINNET_RPC_URL = 'https://rpc.ftm.tools';
+export const FANTOM_OPERA_MAINNET_RPC_URL = "https://rpc.ftm.tools";
 // Abitrum network
-export const ARBITRUM_ONE_MAINNET_RPC_URL = 'https://arb-mainnet.g.alchemy.com/v2/TDx7fOwCQUo2nF4-kzxvyIAIGMrpBmnc';
+export const ARBITRUM_ONE_MAINNET_RPC_URL =
+  "https://arb-mainnet.g.alchemy.com/v2/TDx7fOwCQUo2nF4-kzxvyIAIGMrpBmnc";
 // Cronos network
-export const CRONOS_MAINNET_RPC_URL = 'https://cronosrpc-1.xstaking.sg';
+export const CRONOS_MAINNET_RPC_URL = "https://cronosrpc-1.xstaking.sg";
 // Avalanch network
-export const AVALANCH_NETWORK_RPC_URL = 'https://1rpc.io/avax/c';
+export const AVALANCH_NETWORK_RPC_URL = "https://1rpc.io/avax/c";
 
 /////////////////////////
 ///////S O L A N A///////
 /////////////////////////
-export const SOLANA_DEVNET_RPC_URL = 'https://api.devnet.solana.com/';
-export const SOLANA_TESTNET_RPC_URL = 'https://api.testnet.solana.com/';
-export const SOLANA_MAINNET_RPC_URL = 'https://api.mainnet-beta.solana.com';
+export const SOLANA_DEVNET_RPC_URL = "https://api.devnet.solana.com/";
+export const SOLANA_TESTNET_RPC_URL = "https://api.testnet.solana.com/";
+export const SOLANA_MAINNET_RPC_URL = "https://api.mainnet-beta.solana.com";
 
 //////////////////////////
 ////////R I P P L E///////
 //////////////////////////
-export const RIPPLE_NETWORK_RPC_URL_1 = 'https://s1.ripple.com:51234/';
-export const RIPPLE_NETWORK_RPC_URL_2 = 'wss://s1.ripple.com/';
+export const RIPPLE_NETWORK_RPC_URL_1 = "https://s1.ripple.com:51234/";
+export const RIPPLE_NETWORK_RPC_URL_2 = "wss://s1.ripple.com/";
 
-export const RIPPLE_TESTNET_RPC_URL_1 = 'https://s.altnet.rippletest.net:51234/';
-export const RIPPLE_TESTNET_RPC_URL_2 = 'wss://s.altnet.rippletest.net/';
+export const RIPPLE_TESTNET_RPC_URL_1 =
+  "https://s.altnet.rippletest.net:51234/";
+export const RIPPLE_TESTNET_RPC_URL_2 = "wss://s.altnet.rippletest.net/";
 
-export const RIPPLE_DEVNET_RPC_URL_1 = 'https://s.devnet.rippletest.net:51234/';
-export const RIPPLE_DEVNET_RPC_URL_2 = 'wss://s.devnet.rippletest.net/';
+export const RIPPLE_DEVNET_RPC_URL_1 = "https://s.devnet.rippletest.net:51234/";
+export const RIPPLE_DEVNET_RPC_URL_2 = "wss://s.devnet.rippletest.net/";
 
 ///////////////////////////
 //////////T R O N//////////
 ///////////////////////////
-export const TRON_MAINNET = 'https://api.trongrid.io';
-export const TRON_SHASTA_TESTNET = 'https://api.shasta.trongrid.io';
-export const TRON_NILE_TESTNET = 'https://nile.trongrid.io';
-export const TRON_DAPPCHAIN = 'https://sun.tronex.io'
+export const TRON_MAINNET = "https://api.trongrid.io";
+export const TRON_SHASTA_TESTNET = "https://api.shasta.trongrid.io";
+export const TRON_NILE_TESTNET = "https://nile.trongrid.io";
+export const TRON_DAPPCHAIN = "https://sun.tronex.io";
 
-export const TRON_MAINNET_FULL_NODE = 'https://api.trongrid.io'
-export const TRON_MAINNET_SOLIDITY_NODE = 'https://api.trongrid.io'
-export const TRON_MAINNET_EVENT_SERVER = 'https://api.trongrid.io'
+export const TRON_MAINNET_FULL_NODE = "https://api.trongrid.io";
+export const TRON_MAINNET_SOLIDITY_NODE = "https://api.trongrid.io";
+export const TRON_MAINNET_EVENT_SERVER = "https://api.trongrid.io";
 
-export const TRON_TESTNET_FULL_NODE = 'https://api.shasta.trongrid.io'
-export const TRON_TESTNET_SOLIDITY_NODE = 'https://api.shasta.trongrid.io'
-export const TRON_TESTNET_EVENT_SERVER = 'https://api.shasta.trongrid.io'
+export const TRON_TESTNET_FULL_NODE = "https://api.shasta.trongrid.io";
+export const TRON_TESTNET_SOLIDITY_NODE = "https://api.shasta.trongrid.io";
+export const TRON_TESTNET_EVENT_SERVER = "https://api.shasta.trongrid.io";
 
-export const TRON_DAPPCHAIN_FULL_NDOE = 'https://sun.tronex.io'
-export const TRON_DAPPCHAIN_SOLIDITY_NODE = 'https://sun.tronex.io'
-export const TRON_DAPPCHAIN_EVENT_SERVER = 'https://sun.tronex.io'
-
+export const TRON_DAPPCHAIN_FULL_NDOE = "https://sun.tronex.io";
+export const TRON_DAPPCHAIN_SOLIDITY_NODE = "https://sun.tronex.io";
+export const TRON_DAPPCHAIN_EVENT_SERVER = "https://sun.tronex.io";
 
 ///////////////////////////
 ///////S T E L L A R///////
 ///////////////////////////
-export const STELLAR_MAINNET_SERVER = 'https://horizon.stellar.org/'
-export const STELLAR_TESTNET_API = 'https://friendbot.stellar.org?addr='
-export const STELLAR_TESTNET_SERVER = 'https://horizon-testnet.stellar.org/'
-
+export const STELLAR_MAINNET_SERVER = "https://horizon.stellar.org/";
+export const STELLAR_TESTNET_API = "https://friendbot.stellar.org?addr=";
+export const STELLAR_TESTNET_SERVER = "https://horizon-testnet.stellar.org/";
 
 ////////////////////////////
 ////////C A R D A N O///////
 ////////////////////////////
-export const CARDANO_MAINNET_SERVER = 'https://cardano-mainnet.blockfrost.io/api/v0'
-export const CARDANO_TESTNET_SERVER = 'https://cardano-testnet.blockfrost.io/api/v0'
-export const CARDANO_PREVIEW_SERVER = 'https://cardano-preview.blockfrost.io/api/v0'
-export const CARDANO_PREPROD_SERVER = 'https://cardano-preprod.blockfrost.io/api/v0'
+export const CARDANO_MAINNET_SERVER =
+  "https://cardano-mainnet.blockfrost.io/api/v0";
+export const CARDANO_TESTNET_SERVER =
+  "https://cardano-testnet.blockfrost.io/api/v0";
+export const CARDANO_PREVIEW_SERVER =
+  "https://cardano-preview.blockfrost.io/api/v0";
+export const CARDANO_PREPROD_SERVER =
+  "https://cardano-preprod.blockfrost.io/api/v0";
 
 // Errors
 export const ERRORS = {
-<<<<<<< HEAD
-    invalid_api_request: {
-        message: 'INVALID_API_REQUEST',
-        description: 'Invalid API request'
-    },
-    address_not_activated: {
-        message: 'ADDRESS_NOT_ACTIVATED',
-        description: 'This address must be activated to use'
-    }
-}
-
-
-
-
-=======
   invalid_api_request: {
     message: "INVALID_API_REQUEST",
     description: "Invalid API request",
@@ -279,7 +264,6 @@ export const ERRORS = {
     description: "This address must be activated to use",
   },
 };
->>>>>>> 2244af5180e507855b9846536be982bbd8e34b99
 /************************************************************     GAME    ****************************************/
 export const APP_SERVER_URI = 'https://app.bitsport.gg/api';
 export const WALLET_SERVER_URI = 'https://wallet.bitpool.gg/api';
