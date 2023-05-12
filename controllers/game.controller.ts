@@ -6,18 +6,23 @@ import PlayedChallenges from '../models/PlayedChallenges';
 import User from '../models/User';
 
 export const start = async (req: Request, res: Response) => {
+    console.log('game start');
     if(req.body.uid) {
         if(req.body.cid) {
             AdminChallenge.findById(req.body.cid).then(async (challenge_model: any) => {
+                console.log('challenge-model', challenge_model);
                 if(challenge_model.status === 2) {
                     res.json({ success: false, message: 'Challenge closed.' });
                 }
                 if(challenge_model.coin_sku !== 1) {
+                    console.log('!bitp');
                     User.findById(req.body.uid).then((user: any) => {
+                        console.log(user);
                         if(user.money.qc < challenge_model.qc) {
+                            console.log('low');
                             res.json({ success: false, message: 'You have too low Quest Credit' });
                         }
-                        else if(user.money.qc > 0) {
+                        else {
                             user.money.qc -= challenge_model.qc;
                             user.save().then((err: any) => {
                                 challenge_model.status = 2;
