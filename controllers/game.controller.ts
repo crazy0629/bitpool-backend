@@ -6,33 +6,29 @@ import PlayedChallenges from '../models/PlayedChallenges';
 import User from '../models/User';
 
 export const start = async (req: Request, res: Response) => {
-    console.log('game start');
     if(req.body.uid) {
         if(req.body.cid) {
-            AdminChallenge.findById(req.body.cid).then(async (challenge_model: any) => {
-                console.log('challenge-model', challenge_model);
+            await AdminChallenge.findById(req.body.cid).then(async (challenge_model: any) => {
                 if(challenge_model.status === 2) {
                     res.json({ success: false, message: 'Challenge closed.' });
                 }
                 if(challenge_model.coin_sku !== 1) {
-                    console.log('!bitp');
-                    User.findById(req.body.uid).then((user: any) => {
-                        console.log(user);
-                        if(user.money.qc < challenge_model.qc) {
+                    await User.findById(req.body.uid).then((user: any) => {
+                        if(user.money.quest < challenge_model.qc) {
                             console.log('low');
                             res.json({ success: false, message: 'You have too low Quest Credit' });
+                            return;
                         }
                         else {
-                            user.money.qc -= challenge_model.qc;
+                            user.money.quest -= challenge_model.qc;
                             user.save().then((err: any) => {
                                 challenge_model.status = 2;
                                 challenge_model.save();
-                                res.json({ success: true });
                             });
                         }
                     });
                 }
-                PlayChallenge.findOne({ challenge: challenge_model._id, user: req.body.uid }).then((play_model: any) => {
+                await PlayChallenge.findOne({ challenge: challenge_model._id, user: req.body.uid }).then((play_model: any) => {
                     if(!play_model) {
                         play_model = new PlayChallenge;
                         play_model.user_id = req.body.uid;

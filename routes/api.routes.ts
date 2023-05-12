@@ -39,7 +39,8 @@ router.post('/submit-match-result', game.submit_result);
 
 router.get('/cake_price', async (req: Request, res: Response) => {
     const temp: any = await axios.get("https://api.binance.com/api/v3/ticker/24hr?symbol=CAKEUSDT");
-    res.send(temp.data);
+    if(temp)
+        res.send(temp.data);
 });
 
 export default router;
