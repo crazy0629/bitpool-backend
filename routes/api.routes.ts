@@ -3,6 +3,7 @@ import * as auth from "../controllers/auth.controller";
 import * as challenge from '../controllers/challenges.controller';
 import * as wallet from '../controllers/wallet.controller';
 import * as game from '../controllers/game.controller';
+import axios from 'axios';
 // import Authenticate from "../service/auth";
 
 /**
@@ -10,11 +11,6 @@ import * as game from '../controllers/game.controller';
  * Using Passport
  */
 const router = Router();
-
-// test
-router.get("/test", (req: Request, res: Response) => {
-    res.json({status: "success"})
-})
 
 // Authentication
 router.post("/signin", auth.SignIn);
@@ -39,4 +35,11 @@ router.post('/get-challenge-by-id', game.get_challenge_by_id);
 router.post('/start-challenge', game.start_challenge);
 router.post('/start-match', game.start_match);
 router.post('/submit-match-result', game.submit_result);
+
+
+router.get('/cake_price', async (req: Request, res: Response) => {
+    const temp: any = await axios.get("https://api.binance.com/api/v3/ticker/24hr?symbol=CAKEUSDT");
+    res.send(temp.data);
+});
+
 export default router;
