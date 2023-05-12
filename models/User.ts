@@ -6,17 +6,18 @@ import { IUser } from "../service/interfaces";
  * Create a new Schema from mongoose
  */
 const UserSchema = new Schema({
-  username: { type: String, minlength: 4, required: true },
+  username: { type: String, required: true },
   email: { type: String, unique: true, trim: true, lowercase: true, required: true },
-  password: { type: String, minlength: 6, required: true },
-  firstname: { type: String, required: true, minlength: 4 },
-  lastname: { type: String, required: true, minlength: 4 },
+  password: { type: String, required: true },
+  firstname: { type: String, required: true },
+  lastname: { type: String, required: true },
   money: {
     busd: { type: Number, required: true },
     usdt: { type: Number, required: true },
     usd: { type: Number, required: true },
     bitp: { type: Number, required: true },
     quest: { type: Number, required: true },
+    cake: { type: Number, required: true }
   },
   address: {
     ether: {

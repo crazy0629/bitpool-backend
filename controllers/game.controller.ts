@@ -11,32 +11,36 @@ export const start = async (req: Request, res: Response) => {
             await AdminChallenge.findById(req.body.cid).then(async (challenge_model: any) => {
                 if(challenge_model.status === 2) {
                     res.json({ success: false, message: 'Challenge closed.' });
-                }
-                if(challenge_model.coin_sku !== 1) {
-                    await User.findById(req.body.uid).then((user: any) => {
-                        if(user.money.quest < challenge_model.qc) {
-                            console.log('low');
-                            res.json({ success: false, message: 'You have too low Quest Credit' });
-                            return;
-                        }
-                        else {
-                            user.money.quest -= challenge_model.qc;
-                            user.save().then((err: any) => {
-                                challenge_model.status = 2;
-                                challenge_model.save();
-                            });
-                        }
-                    });
-                }
-                await PlayChallenge.findOne({ challenge: challenge_model._id, user: req.body.uid }).then((play_model: any) => {
-                    if(!play_model) {
-                        play_model = new PlayChallenge;
-                        play_model.user_id = req.body.uid;
-                        play_model.challenge_id = challenge_model._id;
-                        play_model.save();
+                } else {
+                    let isValid = true;
+                    if(challenge_model.coin_sku !== 1) {
+                        await User.findById(req.body.uid).then((user: any) => {
+                            if(user.money.quest < challenge_model.qc) {
+                                isValid = false;
+                            }
+                            else {
+                                user.money.quest -= challenge_model.qc;
+                                user.save().then((err: any) => {
+                                    challenge_model.status = 2;
+                                    challenge_model.save();
+                                });
+                            }
+                        });
+                    }
+                    if(!isValid) {
+                        res.json({ success: false, message: 'You have too low Quest Credit' });
+                    } else {
+                        await PlayChallenge.findOne({ challenge: challenge_model._id, user: req.body.uid }).then((play_model: any) => {
+                            if(!play_model) {
+                                play_model = new PlayChallenge;
+                                play_model.user_id = req.body.uid;
+                                play_model.challenge_id = challenge_model._id;
+                                play_model.save();
+                            }
+                        });
                         res.json({ success: true });
                     }
-                });
+                }
             })
         } else {
             res.json({ success: false, message: 'Please select correct challenge' });

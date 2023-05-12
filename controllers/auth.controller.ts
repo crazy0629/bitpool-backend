@@ -35,13 +35,6 @@ export const SignUp = async ( req: Request, res: Response ) => {
   const tron = getTronPrivateKeyAndWalletAddress();
 
   const payload = {
-    email: req.body.email,
-    password: req.body.password,
-    fname: req.body.first_name,
-    lname: req.body.last_name,
-    username: req.body.username
-  }
-  const newUser = new User({
     firstname: req.body.first_name,
     lastname: req.body.last_name,
     username: req.body.username,
@@ -53,7 +46,9 @@ export const SignUp = async ( req: Request, res: Response ) => {
       bitcoin: { privateKey: ether.privateKey, address: ether.address },
       tron: { privateKey: (await tron).privateKey, address: (await tron).address }
     }
-  });
+  };
+
+  const newUser = new User(payload);
   await newUser.save();
 
   // const transfer = nodemailer.createTransport({

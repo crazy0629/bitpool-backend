@@ -16,6 +16,7 @@ export interface IUser extends Document {
         quest: number;
         bitp: number;
         usd: number;
+        cake: number;
     };
     address: {
         ether: { privateKey: string, address: string },

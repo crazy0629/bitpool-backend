@@ -23,7 +23,8 @@ export const generateToken = (user: IUser) => {
         busd: user.money.busd,
         quest: user.money.quest,
         bitp: user.money.bitp,
-        usd: user.money.usd
+        usd: user.money.usd,
+        cake: user.money.cake
       }
     },
     SECRET_KEY,
