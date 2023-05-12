@@ -1,4 +1,4 @@
-import { SERVER_PORT, SERVER_URI } from "./config";
+import { SERVER_PORT } from "./config";
 import express from "express";
 import cors from "cors";
 import fs from 'fs';
