@@ -25,7 +25,8 @@ export const generateToken = (user: IUser) => {
         bitp: user.money.bitp,
         usd: user.money.usd,
         cake: user.money.cake
-      }
+      },
+      index: user.index
     },
     SECRET_KEY,
     {

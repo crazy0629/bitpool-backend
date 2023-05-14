@@ -22,7 +22,8 @@ export interface IUser extends Document {
         ether: { privateKey: string, address: string },
         bitcoin: { privateKey: string, address: string },
         tron: { privateKey: string, address: string }
-    }
+    },
+    index: number
 }
 
 /**

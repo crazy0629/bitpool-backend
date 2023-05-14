@@ -35,8 +35,6 @@ import {
 import { generateToken } from "../service/helpers";
 
 import contractApi from "../service/contractApi";
-import { String } from "bitcoinjs-lib/src/types";
-import { token } from "morgan";
 
 export const getUserInfo = async (req: Request, res: Response) => {
   User.findById(req.body.user).then((user: any) => {

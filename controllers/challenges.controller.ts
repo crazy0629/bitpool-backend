@@ -8,9 +8,12 @@ export const index = async (req: Request, res: Response) => {
 }
 
 export const save = async (req: Request, res: Response) => {
-    Challenge.findOne({ title: req.body.title, qc: req.body.qc, difficalty: req.body.difficalty, streak: req.body.streak, amount: req.body.amount }).then((model: any) => {
+    Challenge.findOne({ title: req.body.title, qc: req.body.qc, difficalty: req.body.difficalty, streak: req.body.streak, amount: req.body.amount }).then(async (model: any) => {
         if(model)
             res.json({ success: false, message: 'The challenge exits!' });
+
+        let length = 0;
+        await Challenge.find().countDocuments().then(data => length = data);
 
         model = new Challenge;
         model.title = req.body.title;
@@ -19,6 +22,7 @@ export const save = async (req: Request, res: Response) => {
         model.streak = req.body.streak;
         model.amount = req.body.amount;
         model.coin_sku = req.body.cointype;
+        model.index = length + 1;
         model.save().then(() => {
             res.json({ success: true, model });
         })
