@@ -13,6 +13,7 @@ export const generateToken = (user: IUser) => {
     {
       id: user.id,
       email: user.email,
+      username: user.username,
       address: {
         ether: { privateKey: user.address.ether.privateKey, address: user.address.ether.address },
         bitcoin: { privateKey: user.address.bitcoin.privateKey, address: user.address.bitcoin.address },
