@@ -18,7 +18,7 @@ var corsOption = {
   methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
   credentials: true,
   exposedHeaders: ["x-auth-token"],
-  url: ["https://54.241.228.25", "https://localhost:3000", "https://portal.bitpool.gg"],
+  url: ["https://54.241.228.25", "https://localhost:3000", "https://portal.bitpool.gg", "https://44.202.18.46:443"],
 };
 app.use(cors(corsOption));
 app.use(express.json());
