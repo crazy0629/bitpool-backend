@@ -14,7 +14,7 @@ const app = express();
 app.set("port", SERVER_PORT);
 
 //Middlewares
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use(express.static("./client/build"));
 app.use(express.urlencoded({ extended: false }));
