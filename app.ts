@@ -13,8 +13,14 @@ const app = express();
 //Settings
 app.set("port", SERVER_PORT);
 
-//Middlewares
-app.use(cors({ origin: '*' }));
+var corsOption = {
+  origin: `*`,
+  methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
+  credentials: true,
+  exposedHeaders: ["x-auth-token"],
+  url: ["https://54.241.228.25", "https://localhost:3000", "https://portal.bitpool.gg"],
+};
+app.use(cors(corsOption));
 app.use(express.json());
 app.use(express.static("./client/build"));
 app.use(express.urlencoded({ extended: false }));
