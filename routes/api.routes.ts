@@ -1,8 +1,9 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import * as auth from "../controllers/auth.controller";
 import * as challenge from '../controllers/challenges.controller';
 import * as wallet from '../controllers/wallet.controller';
 import * as game from '../controllers/game.controller';
+import axios from 'axios';
 // import Authenticate from "../service/auth";
 
 /**

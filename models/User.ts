@@ -32,8 +32,7 @@ const UserSchema = new Schema({
       privateKey: { type: String, required: true },
       address: { type: String, required: true }
     }
-  },
-  index: { type: Number, required: true }
+  }
 }, { timestamps: true });
 
 /**
