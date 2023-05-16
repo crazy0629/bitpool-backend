@@ -7,7 +7,7 @@ import { IPlayedChallenge } from "../service/interfaces";
 
 const PlayedChallengeSchema = new Schema({
     user_id: { type: Number, required: true },
-    challenge_id: { type: Number, required: true, default: 0 },
+    challenge_id: { type: Number, required: true },
     start_match: { type: String, required: true, trim: true },
     end_match: { type: String, required: true, trim: true },
     winorloss: { type: String, required: true, trim: true },

@@ -65,8 +65,9 @@ export const get_challenge_by_id = (req: Request, res: Response) => {
 }
 
 export const start_challenge = (req: Request, res: Response) => {
+    console.log('start-challenge', req.body);
     AdminChallenge.findOne({ index: req.body.challenge_id }).then((challenge_model: any) => {
-        console.log('start-challenge', req.body);
+        console.log('start-challenge', challenge_model);
         if(challenge_model.status === 2) {
             res.json({ status: 0, message: 'Challenge is closed' });
         } else {
@@ -134,17 +135,17 @@ export const submit_result = (req: Request, res: Response) => {
 
                 // if loss back 2 step
                 if(result === 0) {
-                    let contrast_temp = play_model.current_match - 2;
+                    let contrast_temp = play_model.currant_match - 2;
                     if(contrast_temp < 0) {
                         contrast_temp = 0;
                     }
-                    play_model.current_match = contrast_temp;
+                    play_model.currant_match = contrast_temp;
                     play_model.save();
                 }
 
                 // if win increase 1 step
                 if(result === 1) {
-                    play_model.current_match = play_model.current_match + 1;
+                    play_model.currant_match = play_model.currant_match + 1;
                     play_model.save();
                 }
 
@@ -154,7 +155,7 @@ export const submit_result = (req: Request, res: Response) => {
                     main_challenge.save();
                 }
 
-                if(play_model.current_match === main_challenge.streak) {
+                if(play_model.currant_match === main_challenge.streak) {
                     play_model.status = 2;
                     play_model.iswonchallenge = 1;
                     play_model.save();
