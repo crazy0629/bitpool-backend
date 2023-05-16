@@ -22,6 +22,8 @@ export const save = async (req: Request, res: Response) => {
         model.streak = req.body.streak;
         model.amount = req.body.amount;
         model.coin_sku = req.body.cointype;
+        model.description = '';
+        model.loss_back = '';
         model.index = length + 1;
         model.save().then(() => {
             res.json({ success: true, model });
