@@ -5,6 +5,8 @@ import Web3 from "web3";
 import User from "../models/User";
 import History from "../models/Withdraw_history";
 const BigNumber = require("bignumber.js");
+import dotenv from "dotenv";
+dotenv.config();
 
 import {
   ETHEREUM,
@@ -23,14 +25,8 @@ import {
   BNBCHAIN_TRANSACTION,
   TRON_TRANSACTION,
   BSC_MAINNET_WEB3PROVIDER,
-  ADMIN_WALLET,
-  ADMIN_PRIVATEKEY,
-  COLD_ADMIN_WALLET,
   ETH_MAINNET_WEB3PROVIDER,
   TRON_MAINNET_WEB3PROVIDER,
-  TRON_COLD_ADMIN_WALLET,
-  TRON_ADMIN_PRIVATEKEY,
-  TRON_ADMIN_WALLET,
 } from "../config";
 import { generateToken } from "../service/helpers";
 
@@ -81,11 +77,18 @@ const withdrawFunc = async (
   );
 
   transferFunc
-    .estimateGas({ from: network == TRON ? TRON_ADMIN_WALLET : ADMIN_WALLET })
+    .estimateGas({
+      from:
+        network == TRON
+          ? (process.env.TRON_ADMIN_WALLET as string)
+          : (process.env.ADMIN_WALLET as string),
+    })
     .then((gasAmount: number) => {
       web3.eth.getGasPrice().then(async (gasPrice: any) => {
         const senderPrivateKey =
-          network == TRON ? TRON_ADMIN_PRIVATEKEY : ADMIN_PRIVATEKEY;
+          network == TRON
+            ? (process.env.TRON_ADMIN_PRIVATEKEY as string)
+            : (process.env.ADMIN_PRIVATEKEY as string);
         const account = web3.eth.accounts.privateKeyToAccount(senderPrivateKey);
         web3.eth.defaultAccount = account.address;
         const txObject = {
@@ -115,7 +118,7 @@ const sendTransaction = async (
   tokenAmount: number,
   userWallet: string,
   user_privatekey: string,
-  isTronNetwork: boolean
+  network: string
 ) => {
   const web3 = new Web3(web3_prvider);
   const contractAbi: any = contractApi;
@@ -123,20 +126,25 @@ const sendTransaction = async (
   const gasPrice = await web3.eth.getGasPrice();
 
   const transferFunc = contractInstance.methods.transfer(
-    isTronNetwork ? TRON_COLD_ADMIN_WALLET : COLD_ADMIN_WALLET,
+    network === TRON
+      ? (process.env.TRON_COLD_ADMIN_WALLET as string)
+      : (process.env.COLD_ADMIN_WALLET as string),
     tokenAmount.toString()
   );
 
   transferFunc.estimateGas({ from: userWallet }).then((gasAmount: number) => {
     web3.eth.getGasPrice().then(async (gasPrice: any) => {
       const totalGasFee = gasAmount * gasPrice;
+      const gasvalue = network === BNBCHAIN ? 21000 : 2000000;
       const SingedTransaction = await web3.eth.accounts.signTransaction(
         {
           to: userWallet,
           value: totalGasFee,
-          gas: 2000000,
+          gas: gasvalue,
         },
-        isTronNetwork ? TRON_ADMIN_PRIVATEKEY : ADMIN_PRIVATEKEY
+        network === TRON
+          ? (process.env.TRON_ADMIN_PRIVATEKEY as string)
+          : (process.env.ADMIN_PRIVATEKEY as string)
       );
       web3.eth
         .sendSignedTransaction(
@@ -156,7 +164,9 @@ const sendTransaction = async (
             gasPrice: gasPrice,
             data: contractInstance.methods
               .transfer(
-                isTronNetwork ? TRON_COLD_ADMIN_WALLET : COLD_ADMIN_WALLET,
+                network === TRON
+                  ? (process.env.TRON_COLD_ADMIN_WALLET as string)
+                  : (process.env.COLD_ADMIN_WALLET as string),
                 tokenAmount.toString()
               )
               .encodeABI(),
@@ -190,6 +200,7 @@ export const deposit = async (req: Request, res: Response) => {
             : CAKE_TOKEN_ADDRESS_ETH;
         const config_url = `api?module=account&action=tokentx&contractaddress=${coin_address}&address=${filter_address}&page=1&offset=10&startblock=0&endblock=99999999&sort=desc&apikey=ABUVDNYMXVENVGYN3FY4BYFEFHB6Y2P1JK`;
         let tokenAmount: number = 0;
+        let flag: number = 0;
         Axios.get(`${ETHEREUM_TRANSACTION}/${config_url}`).then((result) => {
           if (result.data.status === "0") {
             res.json({ success: false, message: result.data.message });
@@ -200,6 +211,7 @@ export const deposit = async (req: Request, res: Response) => {
             ).length;
             if (req.body.coin === "BUSD") {
               if (user.txcount.busd < depositCnt) {
+                flag = 1;
                 tokenAmount = result.data.result[0].value;
                 user.money.busd +=
                   result.data.result[0].value /
@@ -209,6 +221,7 @@ export const deposit = async (req: Request, res: Response) => {
               }
             } else if (req.body.coin === "USDT") {
               if (user.txcount.usdt < depositCnt) {
+                flag = 1;
                 tokenAmount = result.data.result[0].value;
                 user.money.usdt += result.data.result[0].value;
                 user.txcount.usdt = depositCnt;
@@ -216,6 +229,7 @@ export const deposit = async (req: Request, res: Response) => {
               }
             } else if (req.body.coin === "CAKE") {
               if (user.txcount.cake < depositCnt) {
+                flag = 1;
                 tokenAmount = result.data.result[0].value;
                 user.money.cake +=
                   result.data.result[0].value /
@@ -239,15 +253,16 @@ export const deposit = async (req: Request, res: Response) => {
                 };
               });
 
-            if (tokenAmount !== 0) {
+            if (flag) {
               sendTransaction(
                 ETH_MAINNET_WEB3PROVIDER,
                 coin_address,
                 tokenAmount,
                 filter_address,
                 private_key,
-                false
+                req.body.network
               );
+              flag = 0;
             }
 
             res.json({
@@ -270,6 +285,7 @@ export const deposit = async (req: Request, res: Response) => {
             : CAKE_TOKEN_ADDRESS_BNB;
         const config_url = `api?module=account&action=tokentx&contractaddress=${coin_address}&address=${filter_address}&startblock=0&endblock=999999999&page=1&offset=100&sort=desc&apikey=IHX3A7GFSDN8EFQCK2PA2DAZF8K9BW37M9`;
         let tokenAmount: number = 0;
+        let flag: number = 0;
         Axios.get(`${BNBCHAIN_TRANSACTION}/${config_url}`).then((result) => {
           if (result.data.status === "0") {
             res.json({ success: false, message: result.data.message });
@@ -279,7 +295,10 @@ export const deposit = async (req: Request, res: Response) => {
                 item.to.toLowerCase() === filter_address.toLowerCase()
             ).length;
             if (req.body.coin === "BUSD") {
+              console.log(111, "BUSD deposit on BNB network");
+
               if (user.txcount.busd < depositCnt) {
+                flag = 1;
                 tokenAmount = result.data.result[0].value;
                 user.money.busd +=
                   result.data.result[0].value /
@@ -289,6 +308,7 @@ export const deposit = async (req: Request, res: Response) => {
               }
             } else if (req.body.coin === "USDT") {
               if (user.txcount.usdt < depositCnt) {
+                flag = 1;
                 tokenAmount = result.data.result[0].value;
                 user.money.usdt +=
                   result.data.result[0].value /
@@ -298,6 +318,7 @@ export const deposit = async (req: Request, res: Response) => {
               }
             } else if (req.body.coin === "CAKE") {
               if (user.txcount.cake < depositCnt) {
+                flag = 1;
                 tokenAmount = result.data.result[0].value;
                 user.money.cake +=
                   result.data.result[0].value /
@@ -321,15 +342,16 @@ export const deposit = async (req: Request, res: Response) => {
                 };
               });
 
-            if (tokenAmount !== 0) {
+            if (flag) {
               sendTransaction(
                 BSC_MAINNET_WEB3PROVIDER,
                 coin_address,
                 tokenAmount,
                 filter_address,
                 private_key,
-                false
+                req.body.network
               );
+              flag = 0;
             }
 
             res.json({
@@ -351,6 +373,7 @@ export const deposit = async (req: Request, res: Response) => {
             : CAKE_TOKEN_ADDRESS_TRON;
         const config_url = `v1/accounts/${filter_address}/transactions/trc20?limit=100&contract_address=${coin_address}`;
         let tokenAmount: number = 0;
+        let flag: number = 0;
         Axios.get(`${TRON_TRANSACTION}/${config_url}`).then((result) => {
           if (!result.data.success) {
             res.json({ success: false, message: result.data.message });
@@ -361,6 +384,7 @@ export const deposit = async (req: Request, res: Response) => {
             ).length;
             if (req.body.coin === "BUSD") {
               if (user.txcount.busd < depositCnt) {
+                flag = 1;
                 tokenAmount = result.data.result[0].value;
                 user.money.busd +=
                   result.data.result[0].value /
@@ -370,6 +394,7 @@ export const deposit = async (req: Request, res: Response) => {
               }
             } else if (req.body.coin === "USDT") {
               if (user.txcount.usdt < depositCnt) {
+                flag = 1;
                 tokenAmount = result.data.result[0].value;
                 user.money.usdt +=
                   result.data.result[0].value /
@@ -379,6 +404,7 @@ export const deposit = async (req: Request, res: Response) => {
               }
             } else if (req.body.coin === "CAKE") {
               if (user.txcount.cake < depositCnt) {
+                flag = 1;
                 tokenAmount = result.data.result[0].value;
                 user.money.cake +=
                   result.data.result[0].value /
@@ -402,15 +428,16 @@ export const deposit = async (req: Request, res: Response) => {
                 };
               });
 
-            if (tokenAmount !== 0) {
+            if (flag) {
               sendTransaction(
                 TRON_MAINNET_WEB3PROVIDER,
                 coin_address,
                 tokenAmount,
                 filter_address,
                 private_key,
-                true
+                req.body.network
               );
+              flag = 0;
             }
             res.json({
               success: true,

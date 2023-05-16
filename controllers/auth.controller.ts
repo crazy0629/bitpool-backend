@@ -1,18 +1,17 @@
 import fs from "fs";
 import bcrypt from "bcrypt";
-import path from 'path';
+import path from "path";
 import { Request, Response } from "express";
 import User from "../models/User";
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 import handlebars from "handlebars";
-import axios from 'axios';
-
+import axios from "axios";
 
 import { generateToken } from "../service/helpers";
-import { USER_EMAIL, USER_PASSWORD, APP_SERVER_URI } from '../config';
-import { getEtherPrivateKeyAndWalletAddress } from '../service/wallet/ethers';
+import { USER_EMAIL, USER_PASSWORD, APP_SERVER_URI } from "../config";
+import { getEtherPrivateKeyAndWalletAddress } from "../service/wallet/ethers";
 // import { getBTCPrivateKeyAndWalletAddress } from '../service/wallet/bitcoin';
-import { getTronPrivateKeyAndWalletAddress } from '../service/wallet/tron';
+import { getTronPrivateKeyAndWalletAddress } from "../service/wallet/tron";
 
 /**
  * User registration function
@@ -20,9 +19,12 @@ import { getTronPrivateKeyAndWalletAddress } from '../service/wallet/tron';
  * @param res
  * @returns
  */
-export const SignUp = async ( req: Request, res: Response ) => {
+export const SignUp = async (req: Request, res: Response) => {
   if (!req.body.email || !req.body.password) {
-    return res.json({ success: false, message: "Please, send your email and password." });
+    return res.json({
+      success: false,
+      message: "Please, send your email and password.",
+    });
   }
 
   const user = await User.findOne({ email: req.body.email });
@@ -40,7 +42,7 @@ export const SignUp = async ( req: Request, res: Response ) => {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
-    money: { busd: 0, usdt: 0, usd: 0, bitp: 0, quest: 3, cake: 0},
+    money: { busd: 0, usdt: 0, usd: 0, bitp: 0, quest: 3, cake: 0 },
     address: {
       ether: { privateKey: ether.privateKey, address: ether.address },
       bitcoin: { privateKey: ether.privateKey, address: ether.address },
@@ -75,8 +77,8 @@ export const SignUp = async ( req: Request, res: Response ) => {
   //   html
   // }, (err, data) => {
   //   if(err) res.json({ success: false, message: 'Sorry! Request has an error!' });
-    // else 
-    res.json({ success: true, token: generateToken(newUser) });
+  // else
+  res.json({ success: true, token: generateToken(newUser) });
   // });
 };
 
@@ -86,7 +88,10 @@ export const SignUp = async ( req: Request, res: Response ) => {
  * @param res
  * @returns
  */
-export const SignIn = async (req: Request, res: Response): Promise<Response> => {
+export const SignIn = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   if (!req.body.email || !req.body.password) {
     return res.json({ success: false, message: "No Input Data!" });
   }
@@ -101,5 +106,8 @@ export const SignIn = async (req: Request, res: Response): Promise<Response> => 
     return res.json({ success: true, token: generateToken(user) });
   }
 
-  return res.json({ success: false, message: "The email or password are incorrect!" });
+  return res.json({
+    success: false,
+    message: "The email or password are incorrect!",
+  });
 };

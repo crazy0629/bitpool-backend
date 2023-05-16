@@ -3,8 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 /**************************************  Server Consts variables  ***********************************/
-export const MONGO_URI = process.env.MONGO_URI as string;
-("mongodb+srv://kuzma:mr.doctor0104@cluster0.danmkpq.mongodb.net/bitsport?retryWrites=true&w=majority");
+
 export const SECRET_KEY =
   (process.env.SECRET_KEY as string) || "bitsport-bitpool-node-project";
 export const SERVER_URI = "http://54.241.67.65";
@@ -117,20 +116,6 @@ export const BSC_MAINNET_WEB3PROVIDER = "https://bsc-dataseed1.binance.org";
 export const ETH_MAINNET_WEB3PROVIDER =
   "https://mainnet.infura.io/v3/4b4f9d91a45846939231b666740bc499";
 export const TRON_MAINNET_WEB3PROVIDER = "https://api.trongrid.io";
-
-export const ADMIN_WALLET = "0x805E16E4921fef0574dc07b217FfE7Efa9C84636";
-
-export const ADMIN_PRIVATEKEY =
-  "50c37e5a4e586a505ae9962189d952939661da7b43ad0fd10cd0b26d6df5230d";
-
-export const COLD_ADMIN_WALLET = "0x0d2B4b121A4d5C3B1398Aa1bd7e590B1A4765449";
-
-export const TRON_ADMIN_WALLET = "TTWJ3RjP3dZF76DgsX3J6jBDPwm89rkX7K";
-
-export const TRON_ADMIN_PRIVATEKEY =
-  "a19b8a08d5ea20109ac8543d01212705d1f8051b702e401d7b8663fc65b44dcd";
-
-export const TRON_COLD_ADMIN_WALLET = "TRuiyvqaSzA7aMZkKcDh3uRdkwT8rJ8WZo";
 
 export const BUSD_TOKEN_ADDRESS_BNB: string =
   process.env.BUSD_TOKEN_ADDRESS_BNB ||
