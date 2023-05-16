@@ -10,9 +10,10 @@ const ChallengeSchema = new Schema({
     difficalty: { type: Number, required: true },
     streak: { type: Number, required: true },
     amount: { type: String, required: true },
-    coin_sku: { type: Number, required: true },                         // 1: bitp, 2: busd, 3: usdt
+    coin_sku: { type: Number, required: true },                         // 1: bitp, 2: busd, 3: usdt, 4: cake
     qc: { type: String, required: true },
-    status: { type: Number, required: true, default: 1 }
+    status: { type: Number, required: true, default: 1 },
+    index: { type: Number, required: true }
 },{ timestamps: true });
 
 /**

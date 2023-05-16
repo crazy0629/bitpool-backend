@@ -28,6 +28,7 @@ export interface IUser extends Document {
     busd: number;
     cake: number;
   };
+  index: number;
 }
 
 /**
@@ -44,6 +45,7 @@ export interface IChallenge extends Document {
   coin_sku: string;
   loss_back: string;
   status: number;
+  index: number;
 }
 
 export interface IPlayChallenge extends Document {
@@ -55,6 +57,7 @@ export interface IPlayChallenge extends Document {
   tot_match: string;
   won_challenge: string;
   status: string;
+  index: number;
 }
 
 export interface IPlayedChallenge extends Document {
@@ -64,26 +67,7 @@ export interface IPlayedChallenge extends Document {
   end_match: string;
   winorloss: string;
   status: number;
-}
-
-export interface IPlayChallenge extends Document {
-  user_id: string;
-  challenge_id: string;
-  current_match: string;
-  win_match: string;
-  loss_match: string;
-  tot_match: string;
-  won_challenge: string;
-  status: string;
-}
-
-export interface IPlayedChallenge extends Document {
-  user_id: string;
-  challenge_id: string;
-  start_match: string;
-  end_match: string;
-  winorloss: string;
-  status: number;
+  index: number;
 }
 
 export interface IHistory extends Document {

@@ -8,13 +8,13 @@ import User from '../models/User';
 export const start = async (req: Request, res: Response) => {
     if(req.body.uid) {
         if(req.body.cid) {
-            await AdminChallenge.findById(req.body.cid).then(async (challenge_model: any) => {
+            await AdminChallenge.findOne({ index: req.body.cid }).then(async (challenge_model: any) => {
                 if(challenge_model.status === 2) {
                     res.json({ success: false, message: 'Challenge closed.' });
                 } else {
                     let isValid = true;
                     if(challenge_model.coin_sku !== 1) {
-                        await User.findById(req.body.uid).then((user: any) => {
+                        await User.findOne({ index: req.body.uid }).then((user: any) => {
                             if(user.money.quest < challenge_model.qc) {
                                 isValid = false;
                             }
@@ -30,11 +30,11 @@ export const start = async (req: Request, res: Response) => {
                     if(!isValid) {
                         res.json({ success: false, message: 'You have too low Quest Credit' });
                     } else {
-                        await PlayChallenge.findOne({ challenge: challenge_model._id, user: req.body.uid }).then((play_model: any) => {
+                        await PlayChallenge.findOne({ challenge_id: challenge_model.index, user_id: req.body.uid }).then((play_model: any) => {
                             if(!play_model) {
                                 play_model = new PlayChallenge;
                                 play_model.user_id = req.body.uid;
-                                play_model.challenge_id = challenge_model._id;
+                                play_model.challenge_id = challenge_model.index;
                                 play_model.save();
                             }
                         });
@@ -58,14 +58,14 @@ export const get_challenge = (req: Request, res: Response) => {
 }
 
 export const get_challenge_by_id = (req: Request, res: Response) => {
-    AdminChallenge.findById(req.body.challenge_id).then((data: any) => {
+    AdminChallenge.findOne({ index: req.body.challenge_id }).then((data: any) => {
         console.log('get-challenge-by-id', req.body.challenge_id);
         res.json({ status: 1, data });
     })
 }
 
 export const start_challenge = (req: Request, res: Response) => {
-    AdminChallenge.findById(req.body.challenge_id).then((challenge_model: any) => {
+    AdminChallenge.findOne({ index: req.body.challenge_id }).then((challenge_model: any) => {
         console.log('start-challenge', req.body);
         if(challenge_model.status === 2) {
             res.json({ status: 0, message: 'Challenge is closed' });
@@ -112,7 +112,7 @@ export const submit_result = (req: Request, res: Response) => {
     const result = req.body.result;
     let iswonchallenge = false;
     console.log('submit-result', req.body);
-    PlayedChallenges.findById(challenge_id).then((played_model: any) => {
+    PlayedChallenges.findOne({ challenge_id: challenge_id }).then((played_model: any) => {
         const user_id = played_model.user_id;
 
         // update user challenge table
@@ -125,7 +125,7 @@ export const submit_result = (req: Request, res: Response) => {
             played_model.save();
 
             // get main task
-            AdminChallenge.findById(played_model.challenge_id).then((main_challenge: any)=> {
+            AdminChallenge.findOne({ index: played_model.challenge_id }).then((main_challenge: any)=> {
                 if(result === 1)
                     play_model.win_match = play_model.win_match + 1;
                 else
@@ -171,7 +171,7 @@ export const submit_result = (req: Request, res: Response) => {
                 }
 
                 if(iswonchallenge) {
-                    User.findById(play_model.user_id).then((user: any) => {
+                    User.findOne({ index: play_model.user_id }).then((user: any) => {
                         if(main_challenge.coin_sku === 1)
                             user.money.bitp = main_challenge.amount;
                         else if(main_challenge.coin_sku === 2)
