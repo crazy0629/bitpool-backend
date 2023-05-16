@@ -14,7 +14,7 @@ const PlayChallengeSchema = new Schema({
     tot_match: { type: Number, required: true, trim: true, default: 0 },
     won_challenge: { type: Number, required: true, trim: true, default: 0 },
     status: { type: Number, required: true, trim: true, default: 0 },
-    index: { type: Number, required: true }
+    index: { type: Number, required: true, default: 0 }
 },{ timestamps: true });
 
 /**

@@ -12,7 +12,7 @@ const PlayedChallengeSchema = new Schema({
     end_match: { type: String, required: true, trim: true },
     winorloss: { type: String, required: true, trim: true },
     status: { type: Number, required: true },
-    index: { type: Number, required: true }
+    index: { type: Number, required: true, default: 0 }
 },{ timestamps: true });
 
 /**

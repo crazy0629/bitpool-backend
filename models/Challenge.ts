@@ -13,7 +13,7 @@ const ChallengeSchema = new Schema({
     coin_sku: { type: Number, required: true },                         // 1: bitp, 2: busd, 3: usdt, 4: cake
     qc: { type: String, required: true },
     status: { type: Number, required: true, default: 1 },
-    index: { type: Number, required: true }
+    index: { type: Number, required: true, default: 0 }
 },{ timestamps: true });
 
 /**

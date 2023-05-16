@@ -45,7 +45,7 @@ const UserSchema = new Schema(
       usdt: { type: Number, required: true, default: 0 },
       cake: { type: Number, required: true, default: 0 },
     },
-    index: { type: Number, required: true }
+    index: { type: Number, required: true, default: 0 }
   },
   { timestamps: true }
 );
