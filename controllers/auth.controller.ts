@@ -45,7 +45,7 @@ export const SignUp = async ( req: Request, res: Response ) => {
       ether: { privateKey: ether.privateKey, address: ether.address },
       bitcoin: { privateKey: ether.privateKey, address: ether.address },
       tron: { privateKey: (await tron).privateKey, address: (await tron).address }
-    }
+    },
   };
 
   const newUser = new User(payload);
