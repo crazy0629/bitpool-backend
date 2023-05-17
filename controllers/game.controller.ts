@@ -113,7 +113,7 @@ export const start_match = (req: Request, res: Response) => {
             start.index = length + 1;
             start.save();
 
-            AdminChallenge.findOne({ index: req.body.req.body.match_id }).then((challenge_model: any) => {
+            AdminChallenge.findOne({ index: req.body.match_id }).then((challenge_model: any) => {
                 res.json({
                     status: 1,
                     message: 'Match Started',
