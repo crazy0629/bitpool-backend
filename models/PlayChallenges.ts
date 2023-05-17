@@ -8,7 +8,7 @@ import { IPlayChallenge } from "../service/interfaces";
 const PlayChallengeSchema = new Schema({
     user_id: { type: Number, required: true },
     challenge_id: { type: Number, required: true, default: 0 },
-    currant_match: { type: Number, required: true, trim: true, default: 0 },
+    current_match: { type: Number, required: true, trim: true, default: 0 },
     win_match: { type: Number, required: true, trim: true, default: 0 },
     loss_match: { type: Number, required: true, trim: true, default: 0 },
     tot_match: { type: Number, required: true, trim: true, default: 0 },

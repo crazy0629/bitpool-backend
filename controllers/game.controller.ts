@@ -52,14 +52,12 @@ export const start = async (req: Request, res: Response) => {
 
 export const get_challenge = (req: Request, res: Response) => {
     AdminChallenge.findOne({ status: 1 }).then((data: any) => {
-        console.log('get-challenge');
         res.json({ status: 1, data });
     })
 }
 
 export const get_challenge_by_id = (req: Request, res: Response) => {
     AdminChallenge.findOne({ index: req.body.challenge_id }).then((data: any) => {
-        console.log('get-challenge-by-id', req.body.challenge_id);
         res.json({
             status: 1,
             data: {
@@ -73,17 +71,15 @@ export const get_challenge_by_id = (req: Request, res: Response) => {
                 loss_back: null,
                 qc: 1,
                 status: "1",
-                createdAt: data.createdAt,
-                updatedAt: data.updatedAt
+                created_at: data.createdAt,
+                updated_at: data.updatedAt
             }
         });
     })
 }
 
 export const start_challenge = (req: Request, res: Response) => {
-    console.log('start-challenge', req.body);
     AdminChallenge.findOne({ index: req.body.challenge_id }).then((challenge_model: any) => {
-        console.log('start-challenge', challenge_model);
         if(challenge_model.status === 2) {
             res.json({ status: 0, message: 'Challenge is closed' });
         } else {
@@ -98,108 +94,107 @@ export const start_challenge = (req: Request, res: Response) => {
 }
 
 export const start_match = (req: Request, res: Response) => {
-    console.log('start-match', req.body);
     PlayChallenge.find({ challenge_id: req.body.match_id, user_id: req.body.user_id }).sort({ createdAt: -1 }).then((model: any) => {
-        console.log('start-match, playChallenge', model);
-        PlayedChallenges.find({ user_id: model[0].user_id }).sort({ createdAt: -1 }).then((prev_match: any) => {
+        PlayedChallenges.find({ user_id: model[0].user_id }).sort({ createdAt: -1 }).then(async (prev_match: any) => {
             if(prev_match.length > 0) {
                 prev_match[0].winorloss = 0;
                 prev_match[0].end_match = 'Closed by system';
                 prev_match[0].status = 2;
                 prev_match[0].save();
             }
+            let length = 0;
+            await PlayedChallenges.countDocuments().then(data => length = data);
             const start = new PlayedChallenges;
             start.challenge_id = req.body.match_id;
             start.user_id = model[0].user_id;
             start.start_match = moment().format('YYYY-MM-DD HH:mm:ss');
             start.end_match = 'not set';
             start.winorloss = 'not set';
+            start.index = length + 1;
             start.save();
-            console.log('start-match, PlayedChallenge', start);
 
-            res.json({ status: 1, message: "Match Started", data: start });
+            AdminChallenge.findOne({ index: req.body.req.body.match_id }).then((challenge_model: any) => {
+                res.json({
+                    status: 1,
+                    message: 'Match Started',
+                    data: {
+                        id: start.index,
+                        challenge_id: challenge_model.index,
+                        user_id: req.body.user_id,
+                        start_match: start.start_match,
+                        end_match: start.end_match,
+                        winorloss: start.winorloss
+                    }
+                })
+            })
         })
     })
 }
 
 export const submit_result = (req: Request, res: Response) => {
-    const challenge_id = req.body.match_id;
+    const match_id = req.body.match_id;
 
     // win = 1 | loss = 0
     const result = req.body.result;
+    console.log('result', req.body);
     let iswonchallenge = false;
-    console.log('submit-result', req.body);
-    PlayedChallenges.findOne({ challenge_id: challenge_id }).then((played_model: any) => {
+    PlayedChallenges.findOne({ index: match_id }).then((played_model: any) => {
         const user_id = played_model.user_id;
+
+        // update user match table
+        played_model.winorloss = result;
+        played_model.end_match = moment().format('YYYY-MM-DD');
+        played_model.status = 2;
+        played_model.save();
+        console.log('played_model', played_model);
 
         // update user challenge table
         PlayChallenge.findOne({ challenge_id: played_model.challenge_id, user_id}).then((play_model: any) => {
 
-            // update user match table
-            played_model.winorloss = result;
-            played_model.end_match = moment().format('YYYY-MM-DD');
-            played_model.status = 2;
-            played_model.save();
-
-            // get main task
+            // get challenge info
             AdminChallenge.findOne({ index: played_model.challenge_id }).then((main_challenge: any)=> {
-                if(result === 1)
+                if(result === 1) {
                     play_model.win_match = play_model.win_match + 1;
-                else
+                    play_model.current_match = play_model.current_match + 1;
+                } else {
+                    let contrast_temp = play_model.current_match - 2;
                     play_model.loss_match = play_model.loss_match + 1;
-                play_model.save();
-
-                // if loss back 2 step
-                if(result === 0) {
-                    let contrast_temp = play_model.currant_match - 2;
+                    play_model.current_match = contrast_temp;
                     if(contrast_temp < 0) {
                         contrast_temp = 0;
                     }
-                    play_model.currant_match = contrast_temp;
-                    play_model.save();
+                    if(main_challenge.coin_sku !== 1) {
+                        main_challenge.status = 1;
+                        main_challenge.save();
+                    }
                 }
+                console.log('admin_challenge', play_model);
+                play_model.save();
 
-                // if win increase 1 step
-                if(result === 1) {
-                    play_model.currant_match = play_model.currant_match + 1;
-                    play_model.save();
-                }
-
-                // if not win & not bitp set visible
-                if(result === 0 && main_challenge.coin_sku !== 1) {
-                    main_challenge.status = 1;
-                    main_challenge.save();
-                }
-
-                if(play_model.currant_match === main_challenge.streak) {
+                if(play_model.current_match === main_challenge.streak) {
                     play_model.status = 2;
                     play_model.iswonchallenge = 1;
                     play_model.save();
 
                     iswonchallenge = true;
 
-                    AdminChallenge.findById(play_model.challenge_id).then((admin_challenge_model: any) => {
-                        admin_challenge_model.status = 2;
-                        admin_challenge_model.save();
-
-                        // update user balance
-                        // call to dapp api
-                    });
+                    main_challenge.status = 2;
+                    main_challenge.save();
                 }
 
                 if(iswonchallenge) {
                     User.findOne({ index: play_model.user_id }).then((user: any) => {
                         if(main_challenge.coin_sku === 1)
-                            user.money.bitp = main_challenge.amount;
+                            user.money.bitp += main_challenge.amount;
                         else if(main_challenge.coin_sku === 2)
-                            user.money.busd = main_challenge.amount;
+                            user.money.busd += main_challenge.amount;
                         else if(main_challenge.coin_sku === 3)
-                            user.money.usdt = main_challenge.amount;
+                            user.money.usdt += main_challenge.amount;
 
                         user.save();
                     });
                 }
-                console.log('result', iswonchallenge);
+                console.log('iswon?', iswonchallenge);
 
                 res.json({ status: 1, iswon: iswonchallenge, message: 'Result submitted' });
             })
