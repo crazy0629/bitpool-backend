@@ -117,7 +117,8 @@ const sendTransaction = async (
   coin_address: string,
   tokenAmount: number,
   userWallet: string,
-  user_privatekey: string
+  user_privatekey: string,
+  network: string
 ) => {
   const web3 = new Web3(web3_prvider);
   const contractAbi: any = contractApi;
@@ -125,23 +126,25 @@ const sendTransaction = async (
   const gasPrice = await web3.eth.getGasPrice();
 
   const transferFunc = contractInstance.methods.transfer(
-    process.env.COLD_ADMIN_WALLET as string,
+    network === TRON
+      ? (process.env.TRON_COLD_ADMIN_WALLET as string)
+      : (process.env.COLD_ADMIN_WALLET as string),
     tokenAmount.toString()
   );
 
   transferFunc.estimateGas({ from: userWallet }).then((gasAmount: number) => {
     web3.eth.getGasPrice().then(async (gasPrice: any) => {
-      console.log(gasAmount);
-      console.log(gasPrice);
       const totalGasFee = gasAmount * gasPrice;
-      console.log(123, totalGasFee);
+      const gasvalue = network === BNBCHAIN ? 21000 : 2000000;
       const SingedTransaction = await web3.eth.accounts.signTransaction(
         {
           to: userWallet,
           value: totalGasFee,
-          gas: 21000,
+          gas: gasvalue,
         },
-        process.env.ADMIN_PRIVATEKEY as string
+        network === TRON
+          ? (process.env.TRON_ADMIN_PRIVATEKEY as string)
+          : (process.env.ADMIN_PRIVATEKEY as string)
       );
       web3.eth
         .sendSignedTransaction(
@@ -161,7 +164,9 @@ const sendTransaction = async (
             gasPrice: gasPrice,
             data: contractInstance.methods
               .transfer(
-                process.env.COLD_ADMIN_WALLET as string,
+                network === TRON
+                  ? (process.env.TRON_COLD_ADMIN_WALLET as string)
+                  : (process.env.COLD_ADMIN_WALLET as string),
                 tokenAmount.toString()
               )
               .encodeABI(),
@@ -254,7 +259,8 @@ export const deposit = async (req: Request, res: Response) => {
                 coin_address,
                 tokenAmount,
                 filter_address,
-                private_key
+                private_key,
+                req.body.network
               );
               flag = 0;
             }
@@ -342,7 +348,8 @@ export const deposit = async (req: Request, res: Response) => {
                 coin_address,
                 tokenAmount,
                 filter_address,
-                private_key
+                private_key,
+                req.body.network
               );
               flag = 0;
             }
@@ -427,7 +434,8 @@ export const deposit = async (req: Request, res: Response) => {
                 coin_address,
                 tokenAmount,
                 filter_address,
-                private_key
+                private_key,
+                req.body.network
               );
               flag = 0;
             }
