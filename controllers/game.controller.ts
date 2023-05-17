@@ -136,7 +136,6 @@ export const submit_result = (req: Request, res: Response) => {
 
     // win = 1 | loss = 0
     const result = req.body.result;
-    console.log('result', req.body);
     let iswonchallenge = false;
     PlayedChallenges.findOne({ index: match_id }).then((played_model: any) => {
         const user_id = played_model.user_id;
@@ -146,44 +145,43 @@ export const submit_result = (req: Request, res: Response) => {
         played_model.end_match = moment().format('YYYY-MM-DD');
         played_model.status = 2;
         played_model.save();
-        console.log('played_model', played_model);
 
         // update user challenge table
         PlayChallenge.findOne({ challenge_id: played_model.challenge_id, user_id}).then((play_model: any) => {
 
             // get challenge info
-            AdminChallenge.findOne({ index: played_model.challenge_id }).then((main_challenge: any)=> {
-                if(result === 1) {
+            AdminChallenge.findOne({ index: played_model.challenge_id }).then(async (main_challenge: any)=> {
+                if(Number(result) === 1) {
                     play_model.win_match = play_model.win_match + 1;
                     play_model.current_match = play_model.current_match + 1;
                 } else {
                     let contrast_temp = play_model.current_match - 2;
                     play_model.loss_match = play_model.loss_match + 1;
-                    play_model.current_match = contrast_temp;
                     if(contrast_temp < 0) {
                         contrast_temp = 0;
                     }
+                    play_model.current_match = contrast_temp;
                     if(main_challenge.coin_sku !== 1) {
                         main_challenge.status = 1;
                         main_challenge.save();
                     }
                 }
-                console.log('admin_challenge', play_model);
-                play_model.save();
+                await play_model.save();
 
                 if(play_model.current_match === main_challenge.streak) {
                     play_model.status = 2;
                     play_model.iswonchallenge = 1;
-                    play_model.save();
+                    await play_model.save();
 
                     iswonchallenge = true;
 
                     main_challenge.status = 2;
-                    main_challenge.save();
+                    await main_challenge.save();
                 }
 
                 if(iswonchallenge) {
                     User.findOne({ index: play_model.user_id }).then((user: any) => {
+                        console.log(main_challenge, user);
                         if(main_challenge.coin_sku === 1)
                             user.money.bitp += main_challenge.amount;
                         else if(main_challenge.coin_sku === 2)
@@ -194,7 +192,6 @@ export const submit_result = (req: Request, res: Response) => {
                         user.save();
                     });
                 }
-                console.log('iswon?', iswonchallenge);
 
                 res.json({ status: 1, iswon: iswonchallenge, message: 'Result submitted' });
             })
