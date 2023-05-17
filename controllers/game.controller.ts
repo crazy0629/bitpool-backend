@@ -57,24 +57,27 @@ export const get_challenge = (req: Request, res: Response) => {
 }
 
 export const get_challenge_by_id = (req: Request, res: Response) => {
+    console.log('get_challenge_by_id, first', req.body);
     AdminChallenge.findOne({ index: req.body.challenge_id }).then((data: any) => {
-        res.json({
-            status: 1,
-            data: {
-                id: data.index,
-                title: data.title,
-                description: null,
-                difficalty: data.difficalty,
-                streak: data.streak,
-                amount: data.amount,
-                coin_sku: data.coin_sku === 1 ? 'BITP' : data.coin_sku === 2 ? 'BUSD' : 'USDT',
-                loss_back: null,
-                qc: 1,
-                status: "1",
-                created_at: data.createdAt,
-                updated_at: data.updatedAt
-            }
-        });
+        if(data) {
+            res.json({
+                status: 1,
+                data: {
+                    id: data.index,
+                    title: data.title,
+                    description: null,
+                    difficalty: data.difficalty,
+                    streak: data.streak,
+                    amount: data.amount,
+                    coin_sku: data.coin_sku === 1 ? 'BITP' : data.coin_sku === 2 ? 'BUSD' : 'USDT',
+                    loss_back: null,
+                    qc: 1,
+                    status: "1",
+                    created_at: data.createdAt,
+                    updated_at: data.updatedAt
+                }
+            });
+        }
     })
 }
 
@@ -94,8 +97,11 @@ export const start_challenge = (req: Request, res: Response) => {
 }
 
 export const start_match = (req: Request, res: Response) => {
+    console.log('start_match, first:', req.body);
     PlayChallenge.find({ challenge_id: req.body.match_id, user_id: req.body.user_id }).sort({ createdAt: -1 }).then((model: any) => {
+        console.log('start_match, second:PlayChallenge', model);
         PlayedChallenges.find({ user_id: model[0].user_id }).sort({ createdAt: -1 }).then(async (prev_match: any) => {
+            console.log('start_match, third:PlayedChallenge', prev_match);
             if(prev_match.length > 0) {
                 prev_match[0].winorloss = 0;
                 prev_match[0].end_match = 'Closed by system';
@@ -114,30 +120,35 @@ export const start_match = (req: Request, res: Response) => {
             start.save();
 
             AdminChallenge.findOne({ index: req.body.match_id }).then((challenge_model: any) => {
-                res.json({
-                    status: 1,
-                    message: 'Match Started',
-                    data: {
-                        id: start.index,
-                        challenge_id: challenge_model.index,
-                        user_id: req.body.user_id,
-                        start_match: start.start_match,
-                        end_match: start.end_match,
-                        winorloss: start.winorloss
-                    }
-                })
+                console.log('start_match', challenge_model);
+                if(challenge_model) {
+                    res.json({
+                        status: 1,
+                        message: 'Match Started',
+                        data: {
+                            id: start.index,
+                            challenge_id: challenge_model.index,
+                            user_id: req.body.user_id,
+                            start_match: start.start_match,
+                            end_match: start.end_match,
+                            winorloss: start.winorloss
+                        }
+                    });
+                }
             })
         })
     })
 }
 
 export const submit_result = (req: Request, res: Response) => {
+    console.log('submit_result, first', req.body);
     const match_id = req.body.match_id;
 
     // win = 1 | loss = 0
     const result = req.body.result;
     let iswonchallenge = false;
     PlayedChallenges.findOne({ index: match_id }).then((played_model: any) => {
+        console.log('submit_result, second', played_model);
         const user_id = played_model.user_id;
 
         // update user match table
