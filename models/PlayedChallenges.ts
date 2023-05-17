@@ -11,7 +11,7 @@ const PlayedChallengeSchema = new Schema({
     start_match: { type: String, required: true, trim: true },
     end_match: { type: String, required: true, trim: true },
     winorloss: { type: String, required: true, trim: true },
-    status: { type: Number, required: true },
+    status: { type: Number },
     index: { type: Number, required: true, default: 0 }
 },{ timestamps: true });
 
