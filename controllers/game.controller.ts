@@ -60,7 +60,23 @@ export const get_challenge = (req: Request, res: Response) => {
 export const get_challenge_by_id = (req: Request, res: Response) => {
     AdminChallenge.findOne({ index: req.body.challenge_id }).then((data: any) => {
         console.log('get-challenge-by-id', req.body.challenge_id);
-        res.json({ status: 1, data });
+        res.json({
+            status: 1,
+            data: {
+                id: data.index,
+                title: data.title,
+                description: null,
+                difficalty: data.difficalty,
+                streak: data.streak,
+                amount: data.amount,
+                coin_sku: data.coin_sku === 1 ? 'BITP' : data.coin_sku === 2 ? 'BUSD' : 'USDT',
+                loss_back: null,
+                qc: 1,
+                status: "1",
+                createdAt: data.createdAt,
+                updatedAt: data.updatedAt
+            }
+        });
     })
 }
 
