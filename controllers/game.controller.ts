@@ -122,7 +122,7 @@ export const start_match = (req: Request, res: Response) => {
             AdminChallenge.findOne({ index: req.body.match_id }).then((challenge_model: any) => {
                 console.log('start_match', challenge_model);
                 if(challenge_model) {
-                    res.json({
+                    const option = {
                         status: 1,
                         message: 'Match Started',
                         data: {
@@ -133,7 +133,9 @@ export const start_match = (req: Request, res: Response) => {
                             end_match: start.end_match,
                             winorloss: start.winorloss
                         }
-                    });
+                    }
+                    console.log('start_match:result', option)
+                    res.json(option);
                 }
             })
         })
