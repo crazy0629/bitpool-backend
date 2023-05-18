@@ -50,11 +50,11 @@ export const start = async (req: Request, res: Response) => {
     }
 }
 
-export const get_challenge = (req: Request, res: Response) => {
-    AdminChallenge.findOne({ status: 1 }).then((data: any) => {
-        res.json({ status: 1, data });
-    })
-}
+// export const get_challenge = (req: Request, res: Response) => {
+//     AdminChallenge.findOne({ status: 1 }).then((data: any) => {
+//         res.json({ status: 1, data });
+//     })
+// }
 
 export const get_challenge_by_id = (req: Request, res: Response) => {
     console.log('get_challenge_by_id, first', req.body);
@@ -81,20 +81,20 @@ export const get_challenge_by_id = (req: Request, res: Response) => {
     })
 }
 
-export const start_challenge = (req: Request, res: Response) => {
-    AdminChallenge.findOne({ index: req.body.challenge_id }).then((challenge_model: any) => {
-        if(challenge_model.status === 2) {
-            res.json({ status: 0, message: 'Challenge is closed' });
-        } else {
-            const play_challenge = new PlayChallenge;
-            play_challenge.user_id = req.body.user_id;
-            play_challenge.challenge_id = req.body.challenge_id;
-            play_challenge.save().then(err => {
-                res.json({ status: 1, message: 'Challenge Started', data: play_challenge })
-            })
-        }
-    })
-}
+// export const start_challenge = (req: Request, res: Response) => {
+//     AdminChallenge.findOne({ index: req.body.challenge_id }).then((challenge_model: any) => {
+//         if(challenge_model.status === 2) {
+//             res.json({ status: 0, message: 'Challenge is closed' });
+//         } else {
+//             const play_challenge = new PlayChallenge;
+//             play_challenge.user_id = req.body.user_id;
+//             play_challenge.challenge_id = req.body.challenge_id;
+//             play_challenge.save().then(err => {
+//                 res.json({ status: 1, message: 'Challenge Started', data: play_challenge })
+//             })
+//         }
+//     })
+// }
 
 export const start_match = (req: Request, res: Response) => {
     console.log('start_match, first:', req.body);
@@ -199,6 +199,8 @@ export const submit_result = (req: Request, res: Response) => {
                             user.money.busd += main_challenge.amount;
                         else if(main_challenge.coin_sku === 3)
                             user.money.usdt += main_challenge.amount;
+                        else if(main_challenge.coin_sku === 4)
+                            user.money.cake += main_challenge.amount;
 
                         user.save();
                     });
