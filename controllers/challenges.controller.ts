@@ -8,7 +8,7 @@ export const index = async (req: Request, res: Response) => {
 }
 
 export const save = async (req: Request, res: Response) => {
-    Challenge.findOne({ title: req.body.title, qc: req.body.qc, difficalty: req.body.difficalty, streak: req.body.streak, amount: req.body.amount }).then(async (model: any) => {
+    Challenge.findOne({ title: req.body.title, qc: req.body.qc, difficulty: req.body.difficulty, streak: req.body.streak, amount: req.body.amount }).then(async (model: any) => {
         if(model)
             res.json({ success: false, message: 'The challenge exits!' });
 
@@ -17,7 +17,7 @@ export const save = async (req: Request, res: Response) => {
 
         model = new Challenge;
         model.title = req.body.title;
-        model.difficalty = req.body.difficalty;
+        model.difficulty = req.body.difficulty;
         model.qc = req.body.qc;
         model.streak = req.body.streak;
         model.amount = req.body.amount;

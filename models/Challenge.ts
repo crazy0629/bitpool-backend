@@ -8,7 +8,7 @@ import { IChallenge } from "../service/interfaces";
 const ChallengeSchema = new Schema({
     title: { type: String, required: true },
     description: { type: String },
-    difficalty: { type: Number, required: true },
+    difficulty: { type: Number, required: true },
     streak: { type: Number, required: true },
     amount: { type: Number, required: true },
     coin_sku: { type: Number, required: true },                         // 1: bitp, 2: busd, 3: usdt, 4: cake

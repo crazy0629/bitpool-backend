@@ -57,7 +57,6 @@ export const get_challenge = (req: Request, res: Response) => {
 }
 
 export const get_challenge_by_id = (req: Request, res: Response) => {
-    console.log('get_challenge_by_id, first', req.body);
     AdminChallenge.findOne({ index: req.body.challenge_id }).then((data: any) => {
         if(data) {
             res.json({
@@ -66,7 +65,7 @@ export const get_challenge_by_id = (req: Request, res: Response) => {
                     id: data.index,
                     title: data.title,
                     description: null,
-                    difficalty: data.difficalty,
+                    difficulty: data.difficulty,
                     streak: data.streak,
                     amount: data.amount,
                     coin_sku: data.coin_sku === 1 ? 'BITP' : data.coin_sku === 2 ? 'BUSD' : 'USDT',
@@ -97,11 +96,8 @@ export const start_challenge = (req: Request, res: Response) => {
 }
 
 export const start_match = (req: Request, res: Response) => {
-    console.log('start_match, first:', req.body);
     PlayChallenge.find({ challenge_id: req.body.match_id, user_id: req.body.user_id }).sort({ createdAt: -1 }).then((model: any) => {
-        console.log('start_match, second:PlayChallenge', model);
         PlayedChallenges.find({ user_id: model[0].user_id }).sort({ createdAt: -1 }).then(async (prev_match: any) => {
-            console.log('start_match, third:PlayedChallenge', prev_match);
             if(prev_match.length > 0) {
                 prev_match[0].winorloss = 0;
                 prev_match[0].end_match = 'Closed by system';
@@ -120,7 +116,6 @@ export const start_match = (req: Request, res: Response) => {
             start.save();
 
             AdminChallenge.findOne({ index: req.body.match_id }).then((challenge_model: any) => {
-                console.log('start_match', challenge_model);
                 if(challenge_model) {
                     const option = {
                         status: 1,
@@ -134,7 +129,6 @@ export const start_match = (req: Request, res: Response) => {
                             winorloss: start.winorloss
                         }
                     }
-                    console.log('start_match:result', option)
                     res.json(option);
                 }
             })
@@ -161,12 +155,12 @@ export const submit_result = (req: Request, res: Response) => {
 
         // update user challenge table
         PlayChallenge.findOne({ challenge_id: played_model.challenge_id, user_id}).then((play_model: any) => {
-
+            console.log('submit_result, play_model', play_model);
             // get challenge info
             AdminChallenge.findOne({ index: played_model.challenge_id }).then(async (main_challenge: any)=> {
                 if(Number(result) === 1) {
-                    play_model.win_match = play_model.win_match + 1;
-                    play_model.current_match = play_model.current_match + 1;
+                    play_model.win_match += 1;
+                    play_model.current_match += 1;
                 } else {
                     let contrast_temp = play_model.current_match - 2;
                     play_model.loss_match = play_model.loss_match + 1;
@@ -180,6 +174,7 @@ export const submit_result = (req: Request, res: Response) => {
                     }
                 }
                 await play_model.save();
+                console.log(play_model.current_match === main_challenge.streak);
 
                 if(play_model.current_match === main_challenge.streak) {
                     play_model.status = 2;

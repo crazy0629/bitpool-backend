@@ -37,7 +37,7 @@ export interface IUser extends Document {
  */
 export interface IChallenge extends Document {
   title: string;
-  difficalty: number;
+  difficulty: number;
   description: string;
   streak: number;
   amount: number;
