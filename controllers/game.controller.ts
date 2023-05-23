@@ -55,6 +55,7 @@ export const start = async (req: Request, res: Response) => {
 
 export const get_challenge_by_id = (req: Request, res: Response) => {
     AdminChallenge.findOne({ index: req.body.challenge_id }).then((data: any) => {
+        console.log('get-challenge-by-id', data);
         if(data) {
             res.json({
                 status: 1,
@@ -137,7 +138,6 @@ export const submit_result = (req: Request, res: Response) => {
 
         // update user challenge table
         PlayChallenge.findOne({ challenge_id: played_model.challenge_id, user_id}).then((play_model: any) => {
-            console.log('submit_result, play_model', play_model);
             // get challenge info
             AdminChallenge.findOne({ index: played_model.challenge_id }).then(async (main_challenge: any)=> {
                 if(Number(result) === 1) {
