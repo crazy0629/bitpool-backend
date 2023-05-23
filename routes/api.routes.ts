@@ -30,9 +30,7 @@ router.post("/withdrawHistory", wallet.withdrawHistory);
 
 // Game
 router.post('/game/start', game.start);
-router.post('/get-challenge', game.get_challenge);
 router.post('/get-challenge-by-id', game.get_challenge_by_id);
-router.post('/start-challenge', game.start_challenge);
 router.post('/start-match', game.start_match);
 router.post('/submit-match-result', game.submit_result);
 

@@ -30,11 +30,14 @@ export const start = async (req: Request, res: Response) => {
                     if(!isValid) {
                         res.json({ success: false, message: 'You have too low Quest Credit' });
                     } else {
+                        let length = 0;
+                        await PlayChallenge.countDocuments().then(data => length = data);
                         await PlayChallenge.findOne({ challenge_id: challenge_model.index, user_id: req.body.uid }).then((play_model: any) => {
                             if(!play_model) {
                                 play_model = new PlayChallenge;
                                 play_model.user_id = req.body.uid;
                                 play_model.challenge_id = challenge_model.index;
+                                play_model.index = length + 1;
                                 play_model.save();
                             }
                         });
@@ -48,12 +51,6 @@ export const start = async (req: Request, res: Response) => {
     } else {
         res.json({ success: false, message: 'Please login!' });
     }
-}
-
-export const get_challenge = (req: Request, res: Response) => {
-    AdminChallenge.findOne({ status: 1 }).then((data: any) => {
-        res.json({ status: 1, data });
-    })
 }
 
 export const get_challenge_by_id = (req: Request, res: Response) => {
@@ -76,21 +73,6 @@ export const get_challenge_by_id = (req: Request, res: Response) => {
                     updated_at: data.updatedAt
                 }
             });
-        }
-    })
-}
-
-export const start_challenge = (req: Request, res: Response) => {
-    AdminChallenge.findOne({ index: req.body.challenge_id }).then((challenge_model: any) => {
-        if(challenge_model.status === 2) {
-            res.json({ status: 0, message: 'Challenge is closed' });
-        } else {
-            const play_challenge = new PlayChallenge;
-            play_challenge.user_id = req.body.user_id;
-            play_challenge.challenge_id = req.body.challenge_id;
-            play_challenge.save().then(err => {
-                res.json({ status: 1, message: 'Challenge Started', data: play_challenge })
-            })
         }
     })
 }
